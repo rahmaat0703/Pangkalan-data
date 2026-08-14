@@ -1,8 +1,8 @@
 const mysql = require('mysql2');
 
 const pool = mysql.createPool({
-    host: 'mysql.railway.internal',
-    port: 3306,
+    host: 'hayabusa.proxy.rlwy.net',
+    port: 38955,
     user: 'root',
     password: 'bmhMsLqeZifHnCKAcZkfolEXvNCQopJY',
     database: 'railway',
