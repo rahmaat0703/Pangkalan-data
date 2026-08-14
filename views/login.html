@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Balai Bahasa Lampung</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: url('/img/icons/landmark.png') center center / cover no-repeat;
+            position: relative;
+        }
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(37, 99, 235, 0.3);
+            z-index: 1;
+        }
+        .login-card {
+            max-width: 550px;
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+        .login-header {
+            background: linear-gradient(135deg, #1e40af, #2563eb);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+            
+        }
+        .login-body {
+            padding: 2.5rem;
+            background: white;
+            border-radius: 0 0 20px 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <img src="/img/logo.png" alt="Logo Balai Bahasa Lampung" style="height: 80px; width: auto; margin-bottom: 15px;">
+            </div>
+            <div class="login-body">
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label class="form-label">NIP</label>
+                        <input type="text" class="form-control" name="nip" placeholder="Masukkan NIP" required autofocus>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password" placeholder="Masukkan Password" required>
+                    </div>
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">Masuk</button>
+                        <a href="/" class="btn btn-outline-secondary">Kembali ke Beranda</a>
+                    </div>
+                </form>
+                <div class="mt-4 text-center">
+                    <small class="text-muted">
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        // Cek jika sudah login
+        window.addEventListener('DOMContentLoaded', async function() {
+            const user = await checkAuth();
+            if (user) {
+                if (user.role === 'admin') {
+                    window.location.href = '/admin/dashboard';
+                } else if (user.role === 'pegawai') {
+                    window.location.href = '/pegawai/dashboard';
+                }
+            }
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    if (result.user.role === 'admin') {
+                        window.location.href = '/admin/dashboard';
+                    } else if (result.user.role === 'pegawai') {
+                        window.location.href = '/pegawai/dashboard';
+                    }
+                } else {
+                    showAlert(result.message || 'Login gagal', 'danger');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Terjadi kesalahan saat login', 'danger');
+            }
+        });
+    </script>
+</body>
+</html>

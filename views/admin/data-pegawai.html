@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Pegawai - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+              <a class="navbar-brand" href="/pegawai/dashboard">
+                <img src="/img/logo.png" alt="Logo Balai Bahasa Lampung" class="brand-logo">
+
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/admin/dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/admin/data-pegawai">Data Pegawai</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/verifikasi-izin">Verifikasi Izin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/pelanggaran">Catatan Khusus</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/konsultasi">Daftar Permohonan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/laporan">Laporan</a></li>
+                </ul>
+                <div class="d-flex align-items-center ms-3" id="userInfo"></div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid my-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>👥 Data Pegawai</h2>
+            <button class="btn btn-primary" onclick="showTambahModal()">
+                ➕ Tambah Pegawai
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Foto</th>
+                                <th>NIP</th>
+                                <th>Nama</th>
+                                <th>Alamat Surel</th>
+                                <th>Jabatan</th>
+                                <th>Role</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pegawaiTable">
+                            <tr><td colspan="8" class="text-center"><div class="spinner-border text-primary"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tambah/Edit -->
+    <div class="modal fade" id="pegawaiModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Tambah Pegawai</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="pegawaiForm" enctype="multipart/form-data">
+                        <input type="hidden" id="pegawaiId">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">NIP <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="nip" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nama <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="nama" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Alamat Surel <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Password <span class="text-danger" id="pwdRequired">*</span></label>
+                                <input type="password" class="form-control" name="password" id="password">
+                                <small class="text-muted">Kosongkan jika tidak ingin mengubah password</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Jabatan</label>
+                                <input type="text" class="form-control" name="jabatan">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Role <span class="text-danger">*</span></label>
+                                <select class="form-select" name="role" required>
+                                    <option value="pegawai">Pegawai</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Tanggal Bergabung</label>
+                                <input type="date" class="form-control" name="tanggal_bergabung">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Foto</label>
+                                <input type="file" class="form-control" name="foto" accept="image/*">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="simpanPegawai()">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        let modalInstance, isEdit = false;
+
+        window.addEventListener('DOMContentLoaded', async function() {
+            const user = await checkAuth();
+            if (!user || user.role !== 'admin') {
+                window.location.href = '/login';
+                return;
+            }
+            loadUserInfo();
+            loadPegawai();
+            modalInstance = new bootstrap.Modal(document.getElementById('pegawaiModal'));
+        });
+
+        async function loadPegawai() {
+            try {
+                const response = await fetch('/api/admin/pegawai');
+                const result = await response.json();
+                if (result.success) {
+                    displayPegawai(result.data);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function displayPegawai(data) {
+            const tbody = document.getElementById('pegawaiTable');
+            tbody.innerHTML = data.map((k, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${k.foto ? `<img src="${k.foto}" width="40" height="40" class="rounded-circle" style="object-fit: cover;">` : '👤'}</td>
+                    <td>${k.nip}</td>
+                    <td>${k.nama}</td>
+                    <td>${k.email}</td>
+                    <td>${k.jabatan || '-'}</td>
+                    <td><span class="badge ${k.role === 'admin' ? 'bg-danger' : 'bg-primary'}">${k.role}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" onclick="editPegawai(${k.id})">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="hapusPegawai(${k.id})">Hapus</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function showTambahModal() {
+            isEdit = false;
+            document.getElementById('modalTitle').textContent = 'Tambah Pegawai';
+            document.getElementById('pegawaiForm').reset();
+            document.getElementById('pegawaiId').value = '';
+            document.getElementById('password').required = true;
+            document.getElementById('pwdRequired').style.display = 'inline';
+            modalInstance.show();
+        }
+
+        async function editPegawai(id) {
+            isEdit = true;
+            document.getElementById('modalTitle').textContent = 'Edit Pegawai';
+            document.getElementById('pegawaiId').value = id;
+            document.getElementById('password').required = false;
+            document.getElementById('pwdRequired').style.display = 'none';
+            
+            // Load data
+            const response = await fetch('/api/admin/pegawai');
+            const result = await response.json();
+            const pegawai = result.data.find(k => k.id === id);
+            
+            if (pegawai) {
+                document.querySelector('[name="nip"]').value = pegawai.nip;
+                document.querySelector('[name="nama"]').value = pegawai.nama;
+                document.querySelector('[name="email"]').value = pegawai.email;
+                document.querySelector('[name="jabatan"]').value = pegawai.jabatan || '';
+                document.querySelector('[name="role"]').value = pegawai.role;
+                document.querySelector('[name="tanggal_bergabung"]').value = pegawai.tanggal_bergabung || '';
+            }
+            
+            modalInstance.show();
+        }
+
+        async function simpanPegawai() {
+            const formData = new FormData(document.getElementById('pegawaiForm'));
+            const id = document.getElementById('pegawaiId').value;
+            
+            const url = isEdit ? `/api/admin/pegawai/${id}` : '/api/admin/pegawai';
+            const method = isEdit ? 'PUT' : 'POST';
+
+            try {
+                const response = await fetch(url, { method, body: formData });
+                const result = await response.json();
+
+                if (result.success) {
+                    showAlert(result.message, 'success');
+                    modalInstance.hide();
+                    loadPegawai();
+                } else {
+                    showAlert(result.message, 'danger');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Terjadi kesalahan', 'danger');
+            }
+        }
+
+        async function hapusPegawai(id) {
+            if (!confirmDelete('Hapus pegawai ini?')) return;
+
+            try {
+                const response = await fetch(`/api/admin/pegawai/${id}`, { method: 'DELETE' });
+                const result = await response.json();
+
+                if (result.success) {
+                    showAlert(result.message, 'success');
+                    loadPegawai();
+                } else {
+                    showAlert(result.message, 'danger');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Terjadi kesalahan', 'danger');
+            }
+        }
+    </script>
+</body>
+</html>

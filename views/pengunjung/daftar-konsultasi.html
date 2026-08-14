@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Konsultasi - Balai Bahasa Lampung</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/img/logo.png" alt="Logo Balai Bahasa Lampung" class="brand-logo">
+                <span class="brand-text"></span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/ajukan-konsultasi">Ajukan Permohonan</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/daftar-konsultasi">Daftar Permohonan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/login">Masuk</a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="mb-4">📋 Daftar Permohonan</h2>
+                
+                <!-- Filter -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <input type="text" class="form-control" id="searchInput" placeholder="🔍 Cari berdasarkan nama...">
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <select class="form-select" id="filterStatus">
+                                    <option value="">Semua Status</option>
+                                    <option value="Menunggu">Menunggu</option>
+                                    <option value="Diproses">Diproses</option>
+                                    <option value="Selesai">Selesai</option>
+                                    <option value="Ditolak">Ditolak</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <select class="form-select" id="filterKeperluan">
+                                    <option value="">Semua Keperluan</option>
+                                    <option value="Ahli Bahasa & Fasilitasi Kebahasaan">Ahli Bahasa & Fasilitasi Kebahasaan</option>
+                                    <option value="UKBI">UKBI</option>
+                                    <option value="Penerjemah">Penerjemah</option>
+                                    <option value="Permohonan Data dan Informasi">Permohonan Data dan Informasi</option>
+                                    <option value="PKL / Magang">PKL / Magang</option>
+                                    <option value="Peminjaman Aula Handak">Peminjaman Aula Handak</option>
+                                    <option value="Lainnya">Lainnya</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <select class="form-select" id="filterBulan">
+                                    <option value="">Semua Bulan</option>
+                                    <option value="01">Januari</option>
+                                    <option value="02">Februari</option>
+                                    <option value="03">Maret</option>
+                                    <option value="04">April</option>
+                                    <option value="05">Mei</option>
+                                    <option value="06">Juni</option>
+                                    <option value="07">Juli</option>
+                                    <option value="08">Agustus</option>
+                                    <option value="09">September</option>
+                                    <option value="10">Oktober</option>
+                                    <option value="11">November</option>
+                                    <option value="12">Desember</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <select class="form-select" id="filterTahun">
+                                    <option value="">Semua Tahun</option>
+                                </select>
+                            </div>
+                            <div class="col-md-1 mb-3">
+                                <button class="btn btn-secondary w-100" onclick="resetFilter()" title="Reset Filter">🔄</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama</th>
+                                        <th>Instansi</th>
+                                        <th>Keperluan</th>
+                                        <th>Keterangan</th>
+                                        <th>Dokumen</th>
+                                        <th>Status</th>
+                                        <th>Tanggal</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="konsultasiTable">
+                                    <tr>
+                                        <td colspan="9" class="text-center">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        let allData = [];
+
+        async function loadKonsultasi() {
+            try {
+                const response = await fetch('/api/pengunjung/konsultasi');
+                const result = await response.json();
+
+                if (result.success) {
+                    allData = result.data;
+                    displayKonsultasi(allData);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('konsultasiTable').innerHTML = `
+                    <tr><td colspan="7" class="text-center text-danger">Gagal memuat data</td></tr>
+                `;
+            }
+        }
+
+        function displayKonsultasi(data) {
+            const tbody = document.getElementById('konsultasiTable');
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" class="text-center">Tidak ada data</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = data.map((item, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${item.nama}</td>
+                    <td>
+                        <small class="text-muted">${item.kategori_instansi}</small><br>
+                        ${item.nama_instansi}
+                    </td>
+                    <td><small>${item.keperluan}</small></td>
+                    <td><small>${item.keterangan ? (item.keterangan.length > 50 ? item.keterangan.substring(0, 50) + '...' : item.keterangan) : '-'}</small></td>
+                    <td>
+                        ${item.file_pendukung ? 
+                            `<a href="${item.file_pendukung}" target="_blank" class="btn btn-sm btn-outline-primary">📄 Lihat</a>` : 
+                            '<small class="text-muted">-</small>'
+                        }
+                    </td>
+                    <td><span class="badge ${getStatusBadgeClass(item.status)}">${item.status}</span></td>
+                    <td><small>${formatTanggal(item.tanggal_dibuat)}</small></td>
+                    <td>
+                        <a href="/detail/${item.id}" class="btn btn-sm btn-info">Detail</a>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterData() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('filterStatus').value;
+            const keperluanFilter = document.getElementById('filterKeperluan').value;
+
+            const filtered = allData.filter(item => {
+                const matchSearch = item.nama.toLowerCase().includes(searchTerm);
+                const matchStatus = !statusFilter || item.status === statusFilter;
+                const matchKeperluan = !keperluanFilter || item.keperluan === keperluanFilter;
+                
+                return matchSearch && matchStatus && matchKeperluan;
+            });
+
+            displayKonsultasi(filtered);
+        }
+
+        document.getElementById('searchInput').addEventListener('input', filterData);
+        document.getElementById('filterStatus').addEventListener('change', filterData);
+        document.getElementById('filterKeperluan').addEventListener('change', filterData);
+
+        loadKonsultasi();
+    </script>
+</body>
+</html>

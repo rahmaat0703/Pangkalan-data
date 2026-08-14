@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Konsultasi - Balai Bahasa Lampung</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/img/logo.png" alt="Logo Balai Bahasa Lampung" class="brand-logo">
+                <span class="brand-text"></span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/ajukan-konsultasi">Ajukan Permohonan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/daftar-konsultasi">Daftar Permohonan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/login">Masuk</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">📄 Detail Permohonan </h4>
+                    </div>
+                    <div class="card-body" id="detailContent">
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-3">
+                    <a href="/daftar-konsultasi" class="btn btn-outline-primary">← Kembali ke Daftar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        async function loadDetail() {
+            try {
+                const id = window.location.pathname.split('/').pop();
+                const response = await fetch(`/api/pengunjung/konsultasi/${id}`);
+                const result = await response.json();
+
+                if (result.success) {
+                    const data = result.data;
+                    displayDetail(data);
+                } else {
+                    showError('Data tidak ditemukan');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Gagal memuat data');
+            }
+        }
+
+        function displayDetail(data) {
+            const content = document.getElementById('detailContent');
+            content.innerHTML = `
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5>Status Permohonan</h5>
+                            <span class="badge ${getStatusBadgeClass(data.status)} fs-6">${data.status}</span>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted small">Nama Lengkap</label>
+                        <p class="fw-bold">${data.nama}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted small">Email</label>
+                        <p class="fw-bold">${data.email}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted small">Kategori Instansi</label>
+                        <p class="fw-bold">${data.kategori_instansi}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted small">Nama Instansi</label>
+                        <p class="fw-bold">${data.nama_instansi}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted small">Keperluan</label>
+                        <p class="fw-bold">${data.keperluan}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted small">Tanggal Diajukan</label>
+                        <p class="fw-bold">${formatTanggalWaktu(data.tanggal_dibuat)}</p>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label class="text-muted small">Keterangan</label>
+                        <p class="fw-bold">${data.keterangan || '-'}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted small">Terakhir Diupdate</label>
+                        <p class="fw-bold">${formatTanggalWaktu(data.tanggal_diupdate)}</p>
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>ℹ️ Catatan:</strong> Informasi kontak Anda (nomor telepon) hanya dapat dilihat oleh admin untuk keperluan komunikasi.
+                </div>
+
+                ${getStatusInfo(data.status)}
+            `;
+        }
+
+        function getStatusInfo(status) {
+            const info = {
+                'Menunggu': {
+                    color: 'warning',
+                    icon: '⏳',
+                    text: 'Permohonan Anda sedang menunggu verifikasi dari admin.'
+                },
+                'Diproses': {
+                    color: 'info',
+                    icon: '🔄',
+                    text: 'Permohonan Anda sedang diproses. Kami akan menghubungi Anda segera.'
+                },
+                'Selesai': {
+                    color: 'success',
+                    icon: '✅',
+                    text: 'Permohonan Anda telah selesai diproses. Terima kasih!'
+                },
+                'Ditolak': {
+                    color: 'danger',
+                    icon: '❌',
+                    text: 'Mohon maaf, permohonan Anda ditolak. Silakan hubungi kami untuk informasi lebih lanjut.'
+                }
+            };
+
+            const s = info[status];
+            return `
+                <div class="alert alert-${s.color} mt-4">
+                    <div class="d-flex align-items-center">
+                        <div class="fs-1 me-3">${s.icon}</div>
+                        <div>
+                            <strong>Informasi Status</strong>
+                            <p class="mb-0">${s.text}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showError(message) {
+            const content = document.getElementById('detailContent');
+            content.innerHTML = `
+                <div class="alert alert-danger">
+                    <strong>Error:</strong> ${message}
+                </div>
+            `;
+        }
+
+        loadDetail();
+    </script>
+</body>
+</html>

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penerjemahan - Balai Bahasa Provinsi Lampung</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+            color: white;
+            padding: 4rem 0 3rem;
+            margin-bottom: 3rem;
+        }
+        .breadcrumb {
+            background: transparent;
+            padding: 1rem 0;
+            margin-bottom: 0;
+        }
+        .breadcrumb-item a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+        }
+        .breadcrumb-item.active {
+            color: white;
+        }
+        .header-icon {
+            font-size: 5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 1.5rem;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+        }
+        .content-section {
+            padding: 3rem 0;
+        }
+        .content-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+        .content-card h3 {
+            color: #2563eb;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 3px solid #2563eb;
+        }
+        .info-box {
+            background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 5px solid #2563eb;
+            margin-bottom: 1rem;
+        }
+        .info-box h5 {
+            color: #2563eb;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .requirement-item {
+            padding: 1rem 1rem 1rem 3rem;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+            border-radius: 10px;
+            border-left: 4px solid #2563eb;
+            position: relative;
+        }
+        .requirement-item::before {
+            content: '✓';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        .step-item {
+            display: flex;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        .step-item:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 50px;
+            width: 2px;
+            height: calc(100% - 20px);
+            background: linear-gradient(180deg, #2563eb, #3b82f6);
+        }
+        .step-number {
+            flex-shrink: 0;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-right: 1.5rem;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+        .step-content {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+            border-radius: 10px;
+            border-left: 3px solid #2563eb;
+        }
+        .language-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .language-card {
+            background: white;
+            border: 2px solid #e0f2fe;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .language-card:hover {
+            border-color: #2563eb;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.15);
+        }
+        .language-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        .language-name {
+            font-weight: 600;
+            color: #2563eb;
+        }
+        .price-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid #e0f2fe;
+            height: 100%;
+        }
+        .price-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.2);
+            border-color: #2563eb;
+        }
+        .price-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e0f2fe;
+        }
+        .price-title {
+            color: #2563eb;
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        .price-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        .price-unit {
+            font-size: 1rem;
+            color: #64748b;
+        }
+        .price-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1.5rem;
+        }
+        .price-features li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f0f9ff;
+            color: #475569;
+        }
+        .price-features li:before {
+            content: '✓ ';
+            color: #2563eb;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        .dokumen-item {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid #e0f2fe;
+            height: 100%;
+        }
+        .dokumen-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.2);
+            border-color: #2563eb;
+        }
+        .dokumen-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+        .dokumen-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: #1e40af;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .btn-download {
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-download:hover {
+            background: linear-gradient(135deg, #1e40af, #2563eb);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+            color: white;
+        }
+        .download-stats {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+        .warning-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 5px solid #f59e0b;
+            margin-top: 2rem;
+        }
+        .warning-box h5 {
+            color: #f59e0b;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/img/logo.png" alt="Logo Balai Bahasa Lampung" class="brand-logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/ajukan-konsultasi">Ajukan Permohonan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/daftar-konsultasi">Daftar Permohonan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/login">Masuk</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+                    <li class="breadcrumb-item active">Penerjemahan</li>
+                </ol>
+            </nav>
+            <div class="row align-items-center">
+                <div class="col-md-2 text-center">
+                    <div class="header-icon">🌐</div>
+                </div>
+                <div class="col-md-10">
+                    <h1 class="display-4 fw-bold mb-3">Layanan Penerjemahan</h1>
+                    <p class="lead mb-0">Jasa penerjemahan dokumen profesional dan tersertifikasi</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Deskripsi -->
+    <section class="content-section">
+        <div class="container">
+            <div class="content-card">
+                <h3>📖 Tentang Layanan Penerjemahan</h3>
+                <p>Balai Bahasa Provinsi Lampung menyediakan layanan penerjemahan dokumen dari dan ke Bahasa Indonesia dengan standar profesional. Layanan ini ditangani oleh penerjemah bersertifikat yang berpengalaman dalam berbagai bidang.</p>
+                
+                <h5 class="mt-4 mb-3">Jenis Dokumen yang Dapat Diterjemahkan:</h5>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h5>📄 Dokumen Resmi</h5>
+                            <p class="mb-0">Akta kelahiran, ijazah, transkrip nilai, surat keterangan, dokumen legal, dan dokumen resmi lainnya.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h5>📚 Dokumen Akademis</h5>
+                            <p class="mb-0">Jurnal ilmiah, tesis, disertasi, artikel penelitian, dan makalah akademis.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h5>💼 Dokumen Bisnis</h5>
+                            <p class="mb-0">Kontrak, proposal, laporan keuangan, presentasi bisnis, dan korespondensi perusahaan.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h5>📖 Dokumen Umum</h5>
+                            <p class="mb-0">Buku, artikel, brosur, website, dan berbagai dokumen umum lainnya.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bahasa yang Tersedia -->
+    <section class="content-section bg-light">
+        <div class="container">
+            <div class="content-card">
+                <h3>🗣️ Bahasa yang Tersedia</h3>
+                <p class="text-muted mb-4">Kami menyediakan layanan penerjemahan dari dan ke berbagai bahasa</p>
+                
+                <div class="language-grid">
+                    <div class="language-card">
+                        <div class="language-icon">🇬🇧</div>
+                        <div class="language-name">Bahasa Inggris</div>
+                    </div>
+                    <div class="language-card">
+                        <div class="language-icon">🇸🇦</div>
+                        <div class="language-name">Bahasa Daerah Lampung</div>
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Persyaratan -->
+    <section class="content-section">
+        <div class="container">
+            <div class="content-card">
+                <h3>📋 Persyaratan Permohonan</h3>
+                <div class="requirement-item">Mengisi formulir permohonan penerjemahan</div>
+                <div class="requirement-item">Menyerahkan dokumen asli atau salinan yang jelas (softcopy atau hardcopy)</div>
+                <div class="requirement-item">Fotokopi KTP pemohon (1 lembar)</div>
+                <div class="requirement-item">Menyebutkan bahasa sumber dan bahasa tujuan penerjemahan</div>
+                <div class="requirement-item">Menyebutkan tujuan penggunaan terjemahan (untuk keperluan apa)</div>
+                
+                <div class="warning-box">
+                    <h5>⚠️ Catatan Penting</h5>
+                    <p class="mb-0">Untuk dokumen resmi yang memerlukan legalisasi (seperti akta kelahiran, ijazah), mohon menyertakan dokumen asli untuk proses verifikasi. Dokumen asli akan dikembalikan setelah proses penerjemahan selesai.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prosedur -->
+    <section class="content-section bg-light">
+        <div class="container">
+            <div class="content-card">
+                <h3>🔄 Prosedur Pengajuan</h3>
+                
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h5>Pengajuan Permohonan</h5>
+                        <p class="mb-0">Mengisi formulir permohonan penerjemahan melalui sistem online atau datang langsung ke Balai Bahasa dengan membawa dokumen yang akan diterjemahkan.</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h5>Verifikasi & Estimasi</h5>
+                        <p class="mb-0">Tim akan memverifikasi dokumen dan memberikan estimasi waktu pengerjaan serta biaya berdasarkan jumlah kata/halaman dan tingkat kesulitan.</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h5>Proses Penerjemahan</h5>
+                        <p class="mb-0">Dokumen akan diterjemahkan oleh penerjemah bersertifikat sesuai dengan standar penerjemahan profesional.</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h5>Quality Control</h5>
+                        <p class="mb-0">Hasil terjemahan akan melalui proses quality control dan editing untuk memastikan akurasi dan kualitas terjemahan.</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h5>Penyerahan Hasil</h5>
+                        <p class="mb-0">Hasil terjemahan diserahkan kepada pemohon beserta cap/stempel dan tanda tangan penerjemah tersumpah (jika diperlukan).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  
+    <!-- Dokumen Pendukung -->
+    <section class="content-section bg-light">
+        <div class="container">
+            <div class="content-card">
+                <h3>📄 Dokumen & Format Surat</h3>
+                <p class="text-muted mb-4">Unduh contoh format surat permohonan dan dokumen pendukung untuk penerjemahan</p>
+                
+                <div class="row" id="dokumenContainer">
+                    <div class="col-12 text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Memuat dokumen...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+            
+            <div class="text-center mt-4">
+                <a href="/ajukan-konsultasi" class="btn btn-primary btn-lg">
+                    Ajukan Permohonan Penerjemahan
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>Balai Bahasa Provinsi Lampung</h5>
+                    <p>Badan Pengembangan dan Pembinaan Bahasa Indonesia di Provinsi Lampung</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Kontak</h5>
+                    <p>📞 (0721) 123456<br>
+                    📧 info@balaibahasalampung.com<br>
+                    🌐 www.balaibahasalampung.com</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Alamat</h5>
+                    <p>Jl. Beringin II No. 40<br>Kemiling, Bandar Lampung<br>Lampung 35153</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Balai Bahasa Provinsi Lampung. All rights reserved. develop By ART</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Load dokumen dari database
+        async function loadDokumen() {
+            try {
+                const response = await fetch('/api/dokumen/kategori/Penerjemah');
+                const result = await response.json();
+                
+                const container = document.getElementById('dokumenContainer');
+                
+                if (result.success && result.data.length > 0) {
+                    container.innerHTML = result.data.map(doc => `
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="dokumen-item">
+                                <div class="text-center">
+                                    <div class="dokumen-icon">📄</div>
+                                    <div class="dokumen-badge">PDF</div>
+                                    <h5>${doc.judul}</h5>
+                                    <p class="text-muted small">${doc.deskripsi || 'Dokumen pendukung penerjemah'}</p>
+                                    <div class="download-stats">
+                                        <small>📥 ${doc.jumlah_download} downloads</small>
+                                    </div>
+                                    <a href="/api/dokumen/download/${doc.id}" class="btn-download mt-3" target="_blank">
+                                        📥 Download Dokumen
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `
+                        <div class="col-12 text-center py-4">
+                            <div style="font-size: 3rem; opacity: 0.3;">📄</div>
+                            <p class="text-muted mt-3">Belum ada dokumen tersedia untuk kategori ini.</p>
+                            <p class="text-muted small">Silakan hubungi admin untuk informasi lebih lanjut.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading dokumen:', error);
+                document.getElementById('dokumenContainer').innerHTML = `
+                    <div class="col-12">
+                        <div class="alert alert-warning">
+                            Gagal memuat dokumen. Silakan coba lagi nanti.
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Load saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', loadDokumen);
+    </script>
+</body>
+</html>

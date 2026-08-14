@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Pelayanan - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+                 <a class="navbar-brand" href="/pegawai/dashboard">
+                <img src="/img/logo.png" alt="Logo Balai Bahasa Lampung" class="brand-logo">
+
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/admin/dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/data-pegawai">Data Pegawai</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/verifikasi-izin">Verifikasi Izin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/pelanggaran">Catatan Khusus</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/admin/konsultasi">Data Permohonan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/laporan">Laporan</a></li>
+                </ul>
+                <div class="d-flex align-items-center ms-3" id="userInfo"></div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid my-4">
+        <h2 class="mb-4">💬 Kelola Permohonan </h2>
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2 mb-3">
+                        <input type="text" class="form-control" id="searchInput" placeholder="🔍 Cari nama atau instansi...">
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <select class="form-select" id="filterStatus">
+                            <option value="">Semua Status</option>
+                            <option value="Menunggu">Menunggu</option>
+                            <option value="Diproses">Diproses</option>
+                            <option value="Selesai">Selesai</option>
+                            <option value="Ditolak">Ditolak</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <select class="form-select" id="filterKeperluan">
+                            <option value="">Semua Keperluan</option>
+                            <option value="Ahli Bahasa & Fasilitasi Kebahasaan">Ahli Bahasa & Fasilitasi Kebahasaan</option>
+                            <option value="UKBI">UKBI</option>
+                            <option value="Penerjemah">Penerjemah</option>
+                            <option value="Permohonan Data dan Informasi">Permohonan Data dan Informasi</option>
+                            <option value="PKL / Magang">PKL / Magang</option>
+                            <option value="Peminjaman Aula Handak">Peminjaman Aula Handak</option>
+                            <option value="Lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <select class="form-select" id="filterBulan">
+                            <option value="">Semua Bulan</option>
+                            <option value="01">Januari</option>
+                            <option value="02">Februari</option>
+                            <option value="03">Maret</option>
+                            <option value="04">April</option>
+                            <option value="05">Mei</option>
+                            <option value="06">Juni</option>
+                            <option value="07">Juli</option>
+                            <option value="08">Agustus</option>
+                            <option value="09">September</option>
+                            <option value="10">Oktober</option>
+                            <option value="11">November</option>
+                            <option value="12">Desember</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <select class="form-select" id="filterTahun">
+                            <option value="">Semua Tahun</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <button class="btn btn-secondary w-100" onclick="resetFilter()" title="Reset Filter">🔄 Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Alamat Surel</th>
+                                <th>Nomor</th>
+                                <th>Instansi</th>
+                                <th>Keperluan</th>
+                                <th>Keterangan</th>
+                                <th>Dokumen</th>
+                                <th>Status</th>
+                                <th>Tanggal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="konsultasiTable">
+                            <tr><td colspan="11" class="text-center"><div class="spinner-border text-primary"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Detail & Update Status -->
+    <div class="modal fade" id="detailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detail Konsultasi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="detailContent">
+                    <!-- Content akan diisi dinamis -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Update Status -->
+    <div class="modal fade" id="statusModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Status Konsultasi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="konsultasiId">
+                    <div class="mb-3">
+                        <label class="form-label">Status <span class="text-danger">*</span></label>
+                        <select class="form-select" id="statusSelect">
+                            <option value="Menunggu">⏳ Menunggu</option>
+                            <option value="Diproses">🔄 Diproses</option>
+                            <option value="Selesai">✅ Selesai</option>
+                            <option value="Ditolak">❌ Ditolak</option>
+                        </select>
+                    </div>
+                    <div class="alert alert-info">
+                        <strong>Info:</strong> Pemohon dapat melihat status ini di halaman publik.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="updateStatus()">💾 Update Status</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        let detailModalInstance, statusModalInstance, allData = [];
+
+        window.addEventListener('DOMContentLoaded', async function() {
+            const user = await checkAuth();
+            if (!user || user.role !== 'admin') {
+                window.location.href = '/login';
+                return;
+            }
+            loadUserInfo();
+            loadKonsultasi();
+            detailModalInstance = new bootstrap.Modal(document.getElementById('detailModal'));
+            statusModalInstance = new bootstrap.Modal(document.getElementById('statusModal'));
+        });
+
+        async function loadKonsultasi() {
+            try {
+                const response = await fetch('/api/admin/konsultasi');
+                const result = await response.json();
+                if (result.success) {
+                    allData = result.data;
+                    displayKonsultasi(allData);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('konsultasiTable').innerHTML = `
+                    <tr><td colspan="9" class="text-center text-danger">Gagal memuat data</td></tr>
+                `;
+            }
+        }
+
+        function displayKonsultasi(data) {
+            const tbody = document.getElementById('konsultasiTable');
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="11" class="text-center">Tidak ada data konsultasi</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = data.map((item, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td><strong>${item.nama}</strong></td>
+                    <td><small>${item.email}</small></td>
+                    <td><small>${item.nomor}</small></td>
+                    <td>
+                        <small class="text-muted">${item.kategori_instansi}</small><br>
+                        <small>${item.nama_instansi}</small>
+                    </td>
+                    <td><small>${item.keperluan}</small></td>
+                    <td><small>${item.keterangan ? (item.keterangan.length > 30 ? item.keterangan.substring(0, 30) + '...' : item.keterangan) : '-'}</small></td>
+                    <td>
+                        ${item.file_pendukung ? 
+                            `<a href="${item.file_pendukung}" target="_blank" class="btn btn-sm btn-outline-primary">📄</a>` : 
+                            '<small class="text-muted">-</small>'
+                        }
+                    </td>
+                    <td><span class="badge ${getStatusBadgeClass(item.status)}">${item.status}</span></td>
+                    <td><small>${formatTanggal(item.tanggal_dibuat)}</small></td>
+                    <td>
+                        <button class="btn btn-sm btn-info" onclick="showDetail(${item.id})">Detail</button>
+                        <button class="btn btn-sm btn-warning" onclick="showStatusModal(${item.id}, '${item.status}')">Status</button>
+                        <button class="btn btn-sm btn-danger" onclick="hapusKonsultasi(${item.id})">Hapus</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function showDetail(id) {
+            try {
+                const response = await fetch(`/api/pengunjung/konsultasi/${id}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const data = result.data;
+                    document.getElementById('detailContent').innerHTML = `
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="text-muted small">Nama Lengkap</label>
+                                <p class="fw-bold">${data.nama}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="text-muted small">Email</label>
+                                <p class="fw-bold">${data.email}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="text-muted small">Nomor Telepon</label>
+                                <p class="fw-bold">${data.nomor}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="text-muted small">Kategori Instansi</label>
+                                <p class="fw-bold">${data.kategori_instansi}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="text-muted small">Nama Instansi</label>
+                                <p class="fw-bold">${data.nama_instansi}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="text-muted small">Keperluan</label>
+                                <p class="fw-bold">${data.keperluan}</p>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="text-muted small">Keterangan</label>
+                                <p class="fw-bold">${data.keterangan || '-'}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="text-muted small">File Pendukung</label>
+                                <p>
+                                    ${data.file_pendukung ? 
+                                        `<a href="${data.file_pendukung}" target="_blank" class="btn btn-sm btn-primary">📄 Download File</a>` : 
+                                        '<span class="text-muted">Tidak ada file</span>'
+                                    }
+                                </p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="text-muted small">Status</label>
+                                <p><span class="badge ${getStatusBadgeClass(data.status)} fs-6">${data.status}</span></p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="text-muted small">Tanggal Diajukan</label>
+                                <p class="fw-bold">${formatTanggalWaktu(data.tanggal_dibuat)}</p>
+                            </div>
+                        </div>
+                    `;
+                    detailModalInstance.show();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Gagal memuat detail', 'danger');
+            }
+        }
+
+        function showStatusModal(id, currentStatus) {
+            document.getElementById('konsultasiId').value = id;
+            document.getElementById('statusSelect').value = currentStatus;
+            statusModalInstance.show();
+        }
+
+        async function updateStatus() {
+            const id = document.getElementById('konsultasiId').value;
+            const status = document.getElementById('statusSelect').value;
+
+            try {
+                const response = await fetch(`/api/admin/konsultasi/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showAlert(result.message, 'success');
+                    statusModalInstance.hide();
+                    loadKonsultasi();
+                } else {
+                    showAlert(result.message, 'danger');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Terjadi kesalahan', 'danger');
+            }
+        }
+
+        async function hapusKonsultasi(id) {
+            if (!confirmDelete('Apakah Anda yakin ingin menghapus data konsultasi ini?')) return;
+
+            try {
+                const response = await fetch(`/api/admin/konsultasi/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showAlert(result.message, 'success');
+                    loadKonsultasi();
+                } else {
+                    showAlert(result.message, 'danger');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Terjadi kesalahan', 'danger');
+            }
+        }
+
+        // Filter functionality
+        document.getElementById('searchInput').addEventListener('input', filterData);
+        document.getElementById('filterStatus').addEventListener('change', filterData);
+        document.getElementById('filterKeperluan').addEventListener('change', filterData);
+        document.getElementById('filterBulan').addEventListener('change', filterData);
+        document.getElementById('filterTahun').addEventListener('change', filterData);
+
+        function filterData() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('filterStatus').value;
+            const keperluanFilter = document.getElementById('filterKeperluan').value;
+            const bulanFilter = document.getElementById('filterBulan').value;
+            const tahunFilter = document.getElementById('filterTahun').value;
+
+            const filtered = allData.filter(item => {
+                const matchSearch = item.nama.toLowerCase().includes(searchTerm) || 
+                                  item.nama_instansi.toLowerCase().includes(searchTerm);
+                const matchStatus = !statusFilter || item.status === statusFilter;
+                const matchKeperluan = !keperluanFilter || item.keperluan === keperluanFilter;
+                
+                // Filter bulan dan tahun
+                let matchBulan = true;
+                let matchTahun = true;
+                
+                if (bulanFilter || tahunFilter) {
+                    const itemDate = new Date(item.tanggal_dibuat);
+                    const itemBulan = String(itemDate.getMonth() + 1).padStart(2, '0');
+                    const itemTahun = String(itemDate.getFullYear());
+                    
+                    if (bulanFilter) {
+                        matchBulan = itemBulan === bulanFilter;
+                    }
+                    if (tahunFilter) {
+                        matchTahun = itemTahun === tahunFilter;
+                    }
+                }
+                
+                return matchSearch && matchStatus && matchKeperluan && matchBulan && matchTahun;
+            });
+
+            displayKonsultasi(filtered);
+        }
+
+        function resetFilter() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('filterKeperluan').value = '';
+            document.getElementById('filterBulan').value = '';
+            document.getElementById('filterTahun').value = '';
+            displayKonsultasi(allData);
+        }
+    </script>
+</body>
+</html>

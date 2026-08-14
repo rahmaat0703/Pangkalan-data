@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .export-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .export-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+                  <a class="navbar-brand" href="/pegawai/dashboard">
+                <img src="/img/logo.png" alt="Logo Balai Bahasa Lampung" class="brand-logo">
+
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/admin/dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/data-pegawai">Data Pegawai</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/verifikasi-izin">Verifikasi Izin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/pelanggaran">Catatan khusus</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/konsultasi">Daftar Permohonan</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/admin/laporan">Laporan</a></li>
+                </ul>
+                <div class="d-flex align-items-center ms-3" id="userInfo"></div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid my-4">
+        <h2 class="mb-4">📊 Laporan & Export Data</h2>
+
+        <div class="alert alert-info">
+            <strong>ℹ️ Informasi:</strong> Klik tombol download untuk mengexport data ke format Excel (.xlsx)
+        </div>
+
+        <!-- Export Cards -->
+        <div class="row mb-5">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card export-card h-100">
+                    <div class="card-body text-center">
+                        <div class="fs-1 mb-3">👥</div>
+                        <h5 class="card-title">Data Pegawai</h5>
+                        <p class="text-muted">Export seluruh data pegawai termasuk NIP, nama, email, jabatan, dan role</p>
+                        <hr>
+                        <a href="/api/export/pegawai" class="btn btn-success w-100" download>
+                            📥 Mengunduh Excel
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card export-card h-100">
+                    <div class="card-body text-center">
+                        <div class="fs-1 mb-3">📝</div>
+                        <h5 class="card-title">Data Izin</h5>
+                        <p class="text-muted">Export data izin keluar-masuk Pegawai lengkap dengan status verifikasi</p>
+                        <hr>
+                        <a href="/api/export/izin" class="btn btn-success w-100" download>
+                            📥 Mengunduh Excel
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card export-card h-100">
+                    <div class="card-body text-center">
+                        <div class="fs-1 mb-3">💬</div>
+                        <h5 class="card-title">Data Permohonan</h5>
+                        <p class="text-muted">Export data permohonan konsultasi dari pengunjung dengan detail lengkap</p>
+                        <hr>
+                        <a href="/api/export/konsultasi" class="btn btn-success w-100" download>
+                            📥 Mengunduh Excel
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card export-card h-100">
+                    <div class="card-body text-center">
+                        <div class="fs-1 mb-3">⚠️</div>
+                        <h5 class="card-title">Data Catatan Khusus</h5>
+                        <p class="text-muted">Export data catatan khusus Pegawai termasuk jenis dan sanksi</p>
+                        <hr>
+                        <a href="/api/export/pelanggaran" class="btn btn-success w-100" download>
+                            📥 Mengunduh Excel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistik Ringkas -->
+        <div class="row">
+            <div class="col-12">
+                <h3 class="mb-4">📈 Statistik Ringkas</h3>
+            </div>
+        </div>
+
+        <div class="row" id="statsContainer">
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h6 class="text-muted">Total Pegawai</h6>
+                        <h2 class="text-primary" id="totalPegawai">-</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h6 class="text-muted">Total Izin (Bulan Ini)</h6>
+                        <h2 class="text-info" id="totalIzinBulanIni">-</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h6 class="text-muted">Total Permohonan</h6>
+                        <h2 class="text-success" id="totalKonsultasi">-</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h6 class="text-muted">Total Catatan Khusus</h6>
+                        <h2 class="text-danger" id="totalPelanggaran">-</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">ℹ️ Informasi Laporan</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="fw-bold">Format Export</h6>
+                        <p>Semua data akan di-export dalam format Microsoft Excel (.xlsx) yang dapat dibuka dengan Microsoft Excel, Google Sheets, atau aplikasi spreadsheet lainnya.</p>
+                        
+                        <h6 class="fw-bold mt-3">Isi Laporan</h6>
+                        <ul>
+                            <li><strong>Data Pegawai:</strong> NIP, Nama, Email, Jabatan, Role, Tanggal Bergabung</li>
+                            <li><strong>Data Izin:</strong> NIP, Nama Pegawai, Tanggal, Jam Keluar, Jam Kembali, Keterangan, Status, Catatan Admin</li>
+                            <li><strong>Data Konsultasi:</strong> Nama, Email, Nomor, Kategori Instansi, Nama Instansi, Keperluan, Status, Tanggal</li>
+                            <li><strong>Data Pelanggaran:</strong> NIP, Nama Pegawai, Jenis Pelanggaran, Tanggal, Deskripsi, Sanksi</li>
+                        </ul>
+
+                        <h6 class="fw-bold mt-3">Tips</h6>
+                        <ul>
+                            <li>Export dilakukan secara real-time dari database</li>
+                            <li>Data yang di-export adalah data terbaru saat tombol download diklik</li>
+                            <li>Simpan file excel dengan nama yang jelas untuk memudahkan pencarian</li>
+                            <li>Gunakan fitur filter di Excel untuk analisis data lebih lanjut</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', async function() {
+            const user = await checkAuth();
+            if (!user || user.role !== 'admin') {
+                window.location.href = '/login';
+                return;
+            }
+            loadUserInfo();
+            loadStats();
+        });
+
+        async function loadStats() {
+            try {
+                // Load total pegawai
+                const pegawaiResponse = await fetch('/api/admin/pegawai');
+                const pegawaiResult = await pegawaiResponse.json();
+                if (pegawaiResult.success) {
+                    document.getElementById('totalPegawai').textContent = pegawaiResult.data.length;
+                }
+
+                // Load total izin bulan ini
+                const izinResponse = await fetch('/api/admin/izin');
+                const izinResult = await izinResponse.json();
+                if (izinResult.success) {
+                    const currentMonth = new Date().getMonth();
+                    const currentYear = new Date().getFullYear();
+                    const izinBulanIni = izinResult.data.filter(item => {
+                        const itemDate = new Date(item.tanggal);
+                        return itemDate.getMonth() === currentMonth && itemDate.getFullYear() === currentYear;
+                    });
+                    document.getElementById('totalIzinBulanIni').textContent = izinBulanIni.length;
+                }
+
+                // Load total konsultasi
+                const konsultasiResponse = await fetch('/api/admin/konsultasi');
+                const konsultasiResult = await konsultasiResponse.json();
+                if (konsultasiResult.success) {
+                    document.getElementById('totalKonsultasi').textContent = konsultasiResult.data.length;
+                }
+
+                // Load total pelanggaran
+                const pelanggaranResponse = await fetch('/api/admin/pelanggaran');
+                const pelanggaranResult = await pelanggaranResponse.json();
+                if (pelanggaranResult.success) {
+                    document.getElementById('totalPelanggaran').textContent = pelanggaranResult.data.length;
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+    </script>
+</body>
+</html>

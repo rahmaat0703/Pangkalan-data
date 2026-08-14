@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PKL/Magang - Balai Bahasa Provinsi Lampung</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+      <style>
+        :root {
+            --primary-blue: #0d6efd;
+            --dark-blue: #084298;
+            --soft-blue: #e7f1ff;
+            --light-blue: #cfe2ff;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+            color: white;
+            padding: 4rem 0 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .breadcrumb {
+            background: transparent;
+            padding: 1rem 0;
+            margin-bottom: 0;
+        }
+
+        .breadcrumb-item a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+        }
+
+        .breadcrumb-item.active {
+            color: white;
+        }
+
+        .header-icon {
+            font-size: 5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 1.5rem;
+            display: inline-block;
+        }
+
+        .content-section {
+            padding: 3rem 0;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .content-card h3 {
+            color: var(--dark-blue);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 3px solid var(--primary-blue);
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, var(--soft-blue) 0%, var(--light-blue) 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .info-box h5 {
+            color: var(--dark-blue);
+            font-weight: 700;
+        }
+
+        .requirement-item {
+            padding: 1rem 1rem 1rem 3rem;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #f8fafc 0%, var(--soft-blue) 100%);
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-blue);
+            position: relative;
+        }
+
+        .requirement-item::before {
+            content: '✓';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background: var(--primary-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .step-item {
+            display: flex;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .step-item:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 50px;
+            width: 2px;
+            height: calc(100% - 20px);
+            background: linear-gradient(180deg, var(--primary-blue), var(--dark-blue));
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-right: 1.5rem;
+        }
+
+        .step-content {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+            border-radius: 10px;
+            color: white;
+        }
+
+        .foto-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .foto-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .foto-item:hover {
+            transform: scale(1.05);
+        }
+
+        .foto-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .foto-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, var(--primary-blue), transparent);
+            color: white;
+            padding: 1rem;
+            font-weight: 500;
+        }
+
+        .dokumen-item {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: 0.3s;
+            border: 2px solid var(--soft-blue);
+            height: 100%;
+        }
+
+        .dokumen-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(13, 110, 253, 0.2);
+            border-color: var(--primary-blue);
+        }
+
+        .dokumen-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .dokumen-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4);
+            color: white;
+        }
+
+        .download-stats {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/img/logo.png" alt="Logo Balai Bahasa Lampung" class="brand-logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/ajukan-konsultasi">Ajukan Permohonan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/daftar-konsultasi">Daftar Permohonan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/login">Masuk</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+                    <li class="breadcrumb-item active">PKL / Magang</li>
+                </ol>
+            </nav>
+            <div class="row align-items-center">
+                <div class="col-md-2 text-center">
+                    <div class="header-icon">👨‍🎓</div>
+                </div>
+                <div class="col-md-10">
+                    <h1 class="display-4 fw-bold mb-3">Praktik Kerja Lapangan / Magang</h1>
+                    <p class="lead mb-0">Program Pengembangan Kompetensi Mahasiswa & Pelajar</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Deskripsi -->
+    <section class="content-section">
+        <div class="container">
+            <div class="content-card">
+                <h3>📖 Tentang Program PKL / Magang</h3>
+                <p>Balai Bahasa Provinsi Lampung membuka kesempatan bagi mahasiswa dan pelajar untuk melaksanakan Praktik Kerja Lapangan (PKL) atau Program Magang sebagai bentuk pengembangan kompetensi di bidang kebahasaan dan kesastraan. Program ini dirancang untuk memberikan pengalaman praktis dalam penelitian bahasa, pengembangan materi pembelajaran, dan pengelolaan program kebahasaan.</p>
+                
+                <h5 class="mt-4 mb-3">Informasi Program:</h5>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h5>⏱️ Durasi Program</h5>
+                            <p class="mb-0">Minimal 1 bulan hingga maksimal 6 bulan, disesuaikan dengan kebutuhan institusi pendidikan dan program studi.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h5>👥 Kuota Peserta</h5>
+                            <p class="mb-0">Maksimal 10 peserta per periode untuk memastikan kualitas pembimbingan yang optimal dan efektif.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h5>📚 Bidang Kegiatan</h5>
+                            <p class="mb-0">Penelitian bahasa, pengembangan materi, literasi, media digital, dokumentasi, dan penyelenggaraan event kebahasaan.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="info-box">
+                            <h5>💰 Biaya</h5>
+                            <p class="mb-0">GRATIS - Tidak dipungut biaya apapun untuk mengikuti program PKL/Magang di Balai Bahasa.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Persyaratan -->
+    <section class="content-section bg-light">
+        <div class="container">
+            <div class="content-card">
+                <h3>📋 Persyaratan Pendaftaran</h3>
+                <div class="requirement-item">Surat pengantar resmi dari institusi/universitas/sekolah</div>
+                <div class="requirement-item">Proposal kegiatan PKL/Magang yang telah disetujui pembimbing akademik</div>
+                <div class="requirement-item">Fotokopi KTM (Kartu Tanda Mahasiswa) atau Kartu Pelajar yang masih berlaku</div>
+                <div class="requirement-item">Fotokopi KTP (Kartu Tanda Penduduk)</div>
+                <div class="requirement-item">Curriculum Vitae (CV) terbaru dan portfolio jika ada</div>
+                <div class="requirement-item">Pas foto terbaru berwarna ukuran 3x4 cm (2 lembar, latar belakang merah)</div>
+                <div class="requirement-item">Mahasiswa aktif minimal semester 4 atau siswa SMA/SMK kelas 11-12</div>
+                <div class="requirement-item">IPK minimal 2.75 untuk mahasiswa (lampirkan transkrip nilai)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prosedur -->
+    <section class="content-section">
+        <div class="container">
+            <div class="content-card">
+                <h3>🔄 Prosedur Pendaftaran & Pelaksanaan</h3>
+                
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h5>Pengajuan Surat</h5>
+                        <p class="mb-0">Mengirimkan surat permohonan PKL/Magang dari institusi ke Balai Bahasa Provinsi Lampung minimal 2 minggu sebelum pelaksanaan melalui email atau langsung ke kantor.</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h5>Verifikasi & Penjadwalan</h5>
+                        <p class="mb-0">Tim Balai Bahasa akan melakukan verifikasi dokumen, kelengkapan persyaratan, dan mengonfirmasi jadwal pelaksanaan dalam 3-5 hari kerja.</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h5>Orientasi & Penempatan</h5>
+                        <p class="mb-0">Peserta mengikuti orientasi program dan ditempatkan di divisi sesuai minat dan kebutuhan (Penelitian, Pengembangan, atau Administrasi).</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h5>Pelaksanaan Program</h5>
+                        <p class="mb-0">Peserta menjalankan kegiatan sesuai rencana yang telah disusun dengan bimbingan pembimbing lapangan dari Balai Bahasa.</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h5>Monitoring & Evaluasi</h5>
+                        <p class="mb-0">Evaluasi berkala dilakukan setiap minggu untuk memastikan progress kegiatan dan memberikan feedback konstruktif kepada peserta.</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <h5>Laporan & Sertifikat</h5>
+                        <p class="mb-0">Peserta menyerahkan laporan akhir PKL/Magang dan mendapatkan sertifikat resmi dari Balai Bahasa Provinsi Lampung.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contoh Surat - DINAMIS DARI DATABASE -->
+    <section class="content-section bg-light">
+        <div class="container">
+            <div class="content-card">
+                <h3>📄 Dokumen & Format Surat</h3>
+                <p class="text-muted mb-4">Unduh contoh format surat dan dokumen pendukung untuk PKL/Magang</p>
+                
+                <div class="row" id="dokumenContainer">
+                    <div class="col-12 text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Memuat dokumen...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Foto Kegiatan -->
+    <section class="content-section">
+        <div class="container">
+            <div class="content-card">
+                <h3>📸 Dokumentasi Kegiatan PKL/Magang</h3>
+                <p class="text-muted">Foto-foto kegiatan peserta PKL/Magang di Balai Bahasa Provinsi Lampung</p>
+                
+                <div class="foto-gallery">
+                    <div class="foto-item">
+                        <img src="/img/layanan/pkl/foto1.jpg" alt="Penelitian Lapangan" onerror="this.src='https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500&h=350&fit=crop'">
+                        <div class="foto-caption">Kegiatan Penelitian Lapangan</div>
+                    </div>
+                    <div class="foto-item">
+                        <img src="/img/layanan/pkl/foto2.jpg" alt="Pengolahan Data" onerror="this.src='https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=500&h=350&fit=crop'">
+                        <div class="foto-caption">Pengolahan Data Bahasa</div>
+                    </div>
+                    <div class="foto-item">
+                        <img src="/img/layanan/pkl/foto3.jpg" alt="Bimbingan Pembimbing" onerror="this.src='https://images.unsplash.com/photo-1531482615713-2afd69097998?w=500&h=350&fit=crop'">
+                        <div class="foto-caption">Sesi Bimbingan dengan Pembimbing</div>
+                    </div>
+                    <div class="foto-item">
+                        <img src="/img/layanan/pkl/foto4.jpg" alt="Workshop" onerror="this.src='https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=500&h=350&fit=crop'">
+                        <div class="foto-caption">Workshop Pengembangan Materi</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info -->
+    <section class="content-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="content-card text-center">
+                        <div style="font-size: 3rem; color: #667eea;">⏱️</div>
+                        <h5 class="mt-3">Durasi Program</h5>
+                        <p class="text-muted mb-0">1 - 6 bulan</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="content-card text-center">
+                        <div style="font-size: 3rem; color: #667eea;">💰</div>
+                        <h5 class="mt-3">Biaya</h5>
+                        <p class="text-muted mb-0">GRATIS</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="content-card text-center">
+                        <div style="font-size: 3rem; color: #667eea;">📧</div>
+                        <h5 class="mt-3">Kontak</h5>
+                        <p class="text-muted mb-0">pkl@balaibahasalampung.com</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="/ajukan-konsultasi" class="btn btn-primary btn-lg">
+                    Daftar PKL/Magang Sekarang
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>Balai Bahasa Provinsi Lampung</h5>
+                    <p>Badan Pengembangan dan Pembinaan Bahasa Indonesia di Provinsi Lampung</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Kontak</h5>
+                    <p>📞 (0721) 123456<br>
+                    📧 info@balaibahasalampung.com<br>
+                    🌐 www.balaibahasalampung.com</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Alamat</h5>
+                    <p>Jl. Beringin II No. 40<br>Kemiling, Bandar Lampung<br>Lampung 35153</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Balai Bahasa Provinsi Lampung. All rights reserved. develop By ART</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Load dokumen dari database
+        async function loadDokumen() {
+            try {
+                console.log('Loading dokumen for PKL / Magang...');
+                const response = await fetch('/api/dokumen/kategori/pkl-magang');
+                console.log('Response status:', response.status);
+                
+                const result = await response.json();
+                console.log('API result:', result);
+                
+                const container = document.getElementById('dokumenContainer');
+                
+                if (result.success && result.data && result.data.length > 0) {
+                    console.log('Found', result.data.length, 'documents');
+                    container.innerHTML = result.data.map(doc => `
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="dokumen-item">
+                                <div class="text-center">
+                                    <div class="dokumen-icon">📄</div>
+                                    <div class="dokumen-badge">${doc.tipe_file && doc.tipe_file.includes('pdf') ? 'PDF' : 'DOC'}</div>
+                                    <h5>${doc.judul}</h5>
+                                    <p class="text-muted small">${doc.deskripsi || 'Dokumen pendukung untuk pkl-magang'}</p>
+                                    <div class="download-stats">
+                                        <small>📥 ${doc.jumlah_download || 0} downloads</small>
+                                    </div>
+                                    <a href="/api/dokumen/download/${doc.id}" class="btn-download mt-3" target="_blank">
+                                        📥 Download Dokumen
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    console.log('No documents found');
+                    container.innerHTML = `
+                        <div class="col-12 text-center py-4">
+                            <div style="font-size: 3rem; opacity: 0.3;">📄</div>
+                            <p class="text-muted mt-3">Belum ada dokumen tersedia untuk kategori ini.</p>
+                            <p class="text-muted small">Silakan hubungi admin untuk informasi lebih lanjut.</p>
+                            <button class="btn btn-sm btn-outline-primary mt-2" onclick="loadDokumen()">
+                                🔄 Muat Ulang
+                            </button>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading dokumen:', error);
+                document.getElementById('dokumenContainer').innerHTML = `
+                    <div class="col-12">
+                        <div class="alert alert-danger">
+                            <strong>Error:</strong> ${error.message || 'Gagal memuat dokumen'}
+                            <br><small>Silakan periksa console untuk detail error</small>
+                            <br><button class="btn btn-sm btn-primary mt-2" onclick="loadDokumen()">Coba Lagi</button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Load saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', loadDokumen);
+    </script>
+</body>
+</html>

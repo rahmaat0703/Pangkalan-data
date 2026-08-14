@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peminjaman Aula - Balai Bahasa Provinsi Lampung</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+   <style>
+        :root{
+            --primary:#0d6efd;
+            --primary-dark:#084298;
+            --soft:#e7f1ff;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 4rem 0 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .breadcrumb {
+            background: transparent;
+            padding: 1rem 0;
+            margin-bottom: 0;
+        }
+
+        .breadcrumb-item a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+        }
+
+        .breadcrumb-item.active {
+            color: white;
+        }
+
+        .header-icon {
+            font-size: 5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 1.5rem;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+        }
+
+        .content-section {
+            padding: 3rem 0;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .content-card h3 {
+            color: var(--primary-dark);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #f8fbff 0%, var(--soft) 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .info-box h5 {
+            color: var(--primary-dark);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .requirement-item {
+            padding: 1rem 1rem 1rem 3rem;
+            margin-bottom: 0.75rem;
+            background: #f8fbff;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            position: relative;
+        }
+
+        .requirement-item::before {
+            content: '✓';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .step-item {
+            display: flex;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .step-item:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 50px;
+            width: 2px;
+            height: calc(100% - 20px);
+            background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-right: 1.5rem;
+            box-shadow: 0 4px 15px rgba(13,110,253,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-content {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            background: #f8fbff;
+            border-radius: 10px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .foto-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .foto-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .foto-item:hover {
+            transform: scale(1.05);
+        }
+
+        .foto-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .foto-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(13,110,253,0.85), transparent);
+            color: white;
+            padding: 1rem;
+            font-weight: 500;
+        }
+
+        .dokumen-item {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid #dbeafe;
+            height: 100%;
+        }
+
+        .dokumen-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(13,110,253,0.2);
+            border-color: var(--primary);
+        }
+
+        .dokumen-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: #e7f1ff;
+            color: var(--primary-dark);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(13,110,253,0.4);
+            color: white;
+        }
+
+        .fasilitas-item {
+            background: #f8fbff;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .fasilitas-item h6 {
+            color: var(--primary-dark);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-box {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(13,110,253,0.3);
+        }
+
+        .price-box h2 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/img/logo.png" alt="Logo Balai Bahasa Lampung" class="brand-logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/ajukan-konsultasi">Ajukan Permohonan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/daftar-konsultasi">Daftar Permohonan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/login">Masuk</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+                    <li class="breadcrumb-item active">Peminjaman Aula</li>
+                </ol>
+            </nav>
+            <div class="row align-items-center">
+                <div class="col-md-2 text-center">
+                    <div class="header-icon">🏛️</div>
+                </div>
+                <div class="col-md-10">
+                    <h1 class="display-4 fw-bold mb-3">Peminjaman Aula</h1>
+                    <p class="lead mb-0">Layanan Peminjaman Ruang Aula Balai Bahasa Provinsi Lampung</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Deskripsi -->
+    <section class="content-section">
+        <div class="container">
+            <div class="content-card">
+                <h3>🏛️ Tentang Layanan Peminjaman Aula</h3>
+                <p>Balai Bahasa Provinsi Lampung menyediakan fasilitas peminjaman aula untuk berbagai kegiatan yang berkaitan dengan pengembangan bahasa dan sastra, kegiatan pendidikan, seminar, workshop, pelatihan, dan acara resmi lainnya.</p>
+                
+                <h5 class="mt-4 mb-3">Fasilitas yang Tersedia:</h5>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="fasilitas-item">
+                            <h6>🪑 Kapasitas Ruangan</h6>
+                            <p class="mb-0">Aula dapat menampung hingga 200 orang dengan penataan auditorium atau 150 orang dengan penataan island.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="fasilitas-item">
+                            <h6>🎤 Audio Visual</h6>
+                            <p class="mb-0">Sistem sound system, proyektor LCD, layar projektor, microphone wireless dan standing, lighting.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="fasilitas-item">
+                            <h6>❄️ AC & Kenyamanan</h6>
+                            <p class="mb-0">Ruangan ber-AC, kursi empuk, pencahayaan yang baik, dan ventilasi udara yang memadai.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="fasilitas-item">
+                            <h6>🌐 Koneksi Internet</h6>
+                            <p class="mb-0">WiFi gratis dengan kecepatan tinggi untuk mendukung kegiatan yang membutuhkan akses internet.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="fasilitas-item">
+                            <h6>🅿️ Area Parkir</h6>
+                            <p class="mb-0">Area parkir luas yang dapat menampung kendaraan roda dua dan roda empat.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="fasilitas-item">
+                            <h6>☕ Pantry</h6>
+                            <p class="mb-0">Ruang pantry untuk persiapan konsumsi dan istirahat peserta acara.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Persyaratan -->
+    <section class="content-section bg-light">
+        <div class="container">
+            <div class="content-card">
+                <h3>📋 Persyaratan Peminjaman</h3>
+                <div class="requirement-item">Mengisi formulir permohonan peminjaman aula secara lengkap</div>
+                <div class="requirement-item">Surat permohonan resmi dari instansi/organisasi pemohon (bermeterai)</div>
+                <div class="requirement-item">Fotokopi KTP/identitas penanggung jawab kegiatan</div>
+                <div class="requirement-item">Proposal kegiatan atau rundown acara yang jelas dan detail</div>
+                <div class="requirement-item">Melakukan pembayaran biaya sewa aula sesuai ketentuan</div>
+                <div class="requirement-item">Menandatangani surat perjanjian peminjaman aula</div>
+                <div class="requirement-item">Menyerahkan jaminan deposit (dikembalikan setelah acara selesai)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prosedur -->
+    <section class="content-section">
+        <div class="container">
+            <div class="content-card">
+                <h3>🔄 Prosedur Peminjaman Aula</h3>
+                
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h5>Pengajuan Permohonan</h5>
+                        <p class="mb-0">Mengajukan surat permohonan peminjaman aula minimal 14 hari sebelum tanggal pelaksanaan kegiatan.</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h5>Verifikasi & Survey</h5>
+                        <p class="mb-0">Pihak Balai Bahasa akan melakukan verifikasi dokumen dan survey kebutuhan fasilitas.</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h5>Konfirmasi Ketersediaan</h5>
+                        <p class="mb-0">Pemohon akan dihubungi untuk konfirmasi ketersediaan aula dan detail teknis acara.</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h5>Pembayaran & Deposit</h5>
+                        <p class="mb-0">Melakukan pembayaran biaya sewa dan deposit jaminan sesuai kesepakatan.</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h5>Penandatanganan Perjanjian</h5>
+                        <p class="mb-0">Menandatangani surat perjanjian peminjaman aula yang memuat hak dan kewajiban kedua belah pihak.</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <h5>Pelaksanaan Kegiatan</h5>
+                        <p class="mb-0">Melaksanakan kegiatan sesuai jadwal. Petugas Balai Bahasa akan mendampingi dan memastikan fasilitas berjalan dengan baik.</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">7</div>
+                    <div class="step-content">
+                        <h5>Serah Terima & Pengembalian Deposit</h5>
+                        <p class="mb-0">Setelah acara selesai, dilakukan pengecekan kondisi aula. Deposit akan dikembalikan jika tidak ada kerusakan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dokumen -->
+    <section class="content-section">
+        <div class="container">
+            <div class="content-card">
+                <h3>📄 Dokumen & Format Surat</h3>
+                <p class="text-muted mb-4">Unduh contoh format surat dan dokumen pendukung untuk peminjaman aula</p>
+                
+                <div class="row" id="dokumenContainer">
+                    <div class="col-12 text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Memuat dokumen...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Foto Kegiatan -->
+    <section class="content-section bg-light">
+        <div class="container">
+            <div class="content-card">
+                <h3>📸 Dokumentasi Aula</h3>
+                <p class="text-muted">Foto-foto fasilitas dan kegiatan di aula Balai Bahasa Provinsi Lampung</p>
+                
+                <div class="foto-gallery">
+                    <div class="foto-item">
+                        <img src="/img/layanan/aula/foto1.jpg" alt="Tampak Depan Aula">
+                        <div class="foto-caption">Tampak Depan Aula</div>
+                    </div>
+                    <div class="foto-item">
+                        <img src="/img/layanan/aula/foto2.jpg" alt="Suasana Seminar">
+                        <div class="foto-caption">Suasana Seminar</div>
+                    </div>
+                    <div class="foto-item">
+                        <img src="/img/layanan/aula/foto3.jpg" alt="Setup Island">
+                        <div class="foto-caption">Setup Island untuk Workshop</div>
+                    </div>
+                    <div class="foto-item">
+                        <img src="/img/layanan/aula/foto4.jpg" alt="Fasilitas Audio Visual">
+                        <div class="foto-caption">Fasilitas Audio Visual</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info -->
+    <section class="content-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="content-card text-center">
+                        <div style="font-size: 3rem; color: #7c3aed;">⏱️</div>
+                        <h5 class="mt-3">Waktu Pemesanan</h5>
+                        <p class="text-muted mb-0">Minimal 14 hari sebelum acara</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="content-card text-center">
+                        <div style="font-size: 3rem; color: #7c3aed;">👥</div>
+                        <h5 class="mt-3">Kapasitas</h5>
+                        <p class="text-muted mb-0">Hingga 200 orang</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="content-card text-center">
+                        <div style="font-size: 3rem; color: #7c3aed;">📧</div>
+                        <h5 class="mt-3">Kontak</h5>
+                        <p class="text-muted mb-0">aula@balaibahasalampung.com</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="/ajukan-konsultasi" class="btn btn-primary btn-lg">
+                    Ajukan Peminjaman Aula
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>Balai Bahasa Provinsi Lampung</h5>
+                    <p>Badan Pengembangan dan Pembinaan Bahasa Indonesia di Provinsi Lampung</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Kontak</h5>
+                    <p>📞 (0721) 123456<br>
+                    📧 info@balaibahasalampung.com<br>
+                    🌐 www.balaibahasalampung.com</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Alamat</h5>
+                    <p>Jl. Beringin II No. 40<br>Kemiling, Bandar Lampung<br>Lampung 35153</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Balai Bahasa Provinsi Lampung. All rights reserved. develop By ART</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        async function loadDokumen() {
+            try {
+                const response = await fetch('/api/dokumen/kategori/Peminjaman Aula Handak');
+                const result = await response.json();
+                
+                const container = document.getElementById('dokumenContainer');
+                
+                if (result.success && result.data.length > 0) {
+                    container.innerHTML = result.data.map(doc => `
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="dokumen-item">
+                                <div class="text-center">
+                                    <div class="dokumen-icon">📄</div>
+                                    <div class="dokumen-badge">PDF</div>
+                                    <h5>${doc.judul}</h5>
+                                    <p class="text-muted small">${doc.deskripsi || 'Dokumen pendukung untuk Peminjaman Aula Handak'}</p>
+                                    <div class="download-stats">
+                                        <small>📥 ${doc.jumlah_download} downloads</small>
+                                    </div>
+                                    <a href="/api/dokumen/download/${doc.id}" class="btn-download mt-3" target="_blank">
+                                        📥 Download Dokumen
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `
+                        <div class="col-12 text-center py-4">
+                            <div style="font-size: 3rem; opacity: 0.3;">📄</div>
+                            <p class="text-muted mt-3">Belum ada dokumen tersedia untuk kategori ini.</p>
+                            <p class="text-muted small">Silakan hubungi admin untuk informasi lebih lanjut.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading dokumen:', error);
+                document.getElementById('dokumenContainer').innerHTML = `
+                    <div class="col-12">
+                        <div class="alert alert-warning">
+                            Gagal memuat dokumen. Silakan coba lagi nanti.
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadDokumen);
+    </script>
+</body>
+</html>

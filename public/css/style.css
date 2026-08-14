@@ -1,0 +1,1285 @@
+/* Global Styles */
+:root {
+    --primary-blue: #2563eb;
+    --light-blue: #3b82f6;
+    --dark-blue: #1e40af;
+    --white: #ffffff;
+    --light-gray: #f8fafc;
+    --gray: #64748b;
+    --dark-gray: #334155;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-gray);
+    color: var(--dark-gray);
+    line-height: 1.6;
+}
+
+/* Navbar - KEMBALI KE HITAM */
+.navbar {
+    background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    padding: 0.75rem 0;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--white) !important;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.navbar-brand .brand-logo {
+    height: 45px;
+    width: auto;
+    object-fit: contain;
+}
+.nav-logo-right {
+    height: 90px;
+    width: auto;
+    object-fit: contain;
+}
+
+.navbar-brand .brand-text {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-weight: 500;
+    margin: 0 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--white) !important;
+    transform: translateY(-2px);
+}
+
+.navbar-nav .nav-link.active {
+    color: var(--white) !important;
+    font-weight: 600;
+}
+
+/* Hero Section - SLIDESHOW BACKGROUND */
+.hero-section {
+    color: var(--white);
+    padding: 5rem 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    min-height: 500px;
+}
+
+/* Background Slideshow Animation */
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    animation: slideshow 20s infinite;
+    z-index: 0;
+}
+
+/* Keyframe untuk 4 foto yang berganti */
+@keyframes slideshow {
+    0% {
+        background-image: url('/img/background.png');
+        opacity: 1;
+    }
+    23% {
+        background-image: url('/img/background.png');
+        opacity: 1;
+    }
+    25% {
+        background-image: url('/img/background2.png');
+        opacity: 1;
+    }
+    48% {
+        background-image: url('/img/background2.png');
+        opacity: 1;
+    }
+    50% {
+        background-image: url('/img/FTBI.png');
+        opacity: 1;
+    }
+    73% {
+        background-image: url('/img/FTBI.png');
+        opacity: 1;
+    }
+    75% {
+        background-image: url('/img/layanan.png');
+        opacity: 1;
+    }
+    98% {
+        background-image: url('/img/layanan.png');
+        opacity: 1;
+    }
+    99% {
+        background-image: url('/img/icons/galadada.png');
+        opacity: 1;
+    }
+}
+
+/* Overlay gelap agar teks tetap terbaca */
+.hero-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(37, 99, 235, 0.7);
+    z-index: 0;
+}
+
+.hero-section .content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Animasi Teks Hero - Setiap Kata Masuk Satu per Satu */
+.hero-section h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-section h1 .word {
+    display: inline-block;
+    opacity: 0;
+    animation: wordSlideIn 0.8s ease-out forwards;
+}
+
+/* Delay untuk setiap kata */
+.hero-section h1 .word:nth-child(1) { animation-delay: 0.1s; }
+.hero-section h1 .word:nth-child(2) { animation-delay: 0.3s; }
+.hero-section h1 .word:nth-child(3) { animation-delay: 0.5s; }
+.hero-section h1 .word:nth-child(4) { animation-delay: 0.7s; }
+.hero-section h1 .word:nth-child(5) { animation-delay: 0.9s; }
+.hero-section h1 .word:nth-child(6) { animation-delay: 1.1s; }
+.hero-section h1 .word:nth-child(7) { animation-delay: 1.3s; }
+.hero-section h1 .word:nth-child(8) { animation-delay: 1.5s; }
+.hero-section h1 .word:nth-child(9) { animation-delay: 1.7s; }
+.hero-section h1 .word:nth-child(10) { animation-delay: 1.9s; }
+
+@keyframes wordSlideIn {
+    0% {
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Animasi Paragraf */
+.hero-section p {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 1s ease-out;
+    animation-delay: 2.2s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animasi Tombol */
+.hero-section .btn {
+    animation: fadeInUp 1s ease-out;
+    animation-delay: 2.8s;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+/* ============================================ */
+/* ANIMASI ICON PNG - HANYA UNTUK HALAMAN INDEX */
+/* ============================================ */
+
+/* Container untuk animasi - tambahkan class ini di body halaman index */
+.index-page .floating-icons {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+/* Icon 1 - Buku */
+.index-page .floating-icon-1 {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-image: url('/img/icons/book.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: float1 25s linear infinite;
+    opacity: 0.7;
+}
+
+@keyframes float1 {
+    0% {
+        transform: translate(-100px, 100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.7;
+    }
+    90% {
+        opacity: 0.7;
+    }
+    100% {
+        transform: translate(200px, -100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Icon 2 - Pensil */
+.index-page .floating-icon-2 {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('/img/icons/galadada.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: float2 30s linear infinite;
+    animation-delay: 5s;
+    opacity: 0.6;
+}
+
+@keyframes float2 {
+    0% {
+        transform: translate(100vw, 100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+    }
+    90% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translate(-100px, -100px) rotate(-360deg);
+        opacity: 0;
+    }
+}
+
+/* Icon 3 - Bintang */
+.index-page .floating-icon-3 {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    background-image: url('/img/icons/landmark.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: float3 35s linear infinite;
+    animation-delay: 10s;
+    opacity: 0.8;
+}
+
+@keyframes float3 {
+    0% {
+        transform: translate(50vw, 100vh) rotate(0deg) scale(0.8);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+    }
+    50% {
+        transform: translate(30vw, 50vh) rotate(180deg) scale(1.2);
+    }
+    90% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(10vw, -100px) rotate(360deg) scale(0.8);
+        opacity: 0;
+    }
+}
+
+/* Icon 4 - Dokumen */
+.index-page .floating-icon-4 {
+    position: absolute;
+    width: 55px;
+    height: 55px;
+    background-image: url('/img/icons/document.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: float4 28s linear infinite;
+    animation-delay: 15s;
+    opacity: 0.65;
+}
+
+@keyframes float4 {
+    0% {
+        transform: translate(80vw, 100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.65;
+    }
+    90% {
+        opacity: 0.65;
+    }
+    100% {
+        transform: translate(20vw, -100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Multiple instances untuk lebih banyak icon */
+.index-page .floating-icon-1:nth-child(2) {
+    animation-delay: 8s;
+    animation-duration: 28s;
+}
+
+.index-page .floating-icon-2:nth-child(3) {
+    animation-delay: 12s;
+    animation-duration: 33s;
+}
+
+.index-page .floating-icon-3:nth-child(4) {
+    animation-delay: 18s;
+    animation-duration: 32s;
+}
+
+.index-page .floating-icon-4:nth-child(5) {
+    animation-delay: 22s;
+    animation-duration: 30s;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    margin-bottom: 2rem;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
+    color: var(--white);
+    border-radius: 15px 15px 0 0 !important;
+    padding: 1.25rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
+    border: none;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.4);
+}
+
+.btn-outline-primary {
+    color: var(--primary-blue);
+    border: 2px solid var(--primary-blue);
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-blue);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+/* Services Section */
+.services-section {
+    padding: 4rem 0;
+    position: relative;
+    background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #f8fafc 100%);
+}
+
+.services-section h2 {
+    position: relative;
+    display: inline-block;
+}
+
+.services-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-blue), var(--light-blue));
+    border-radius: 2px;
+}
+
+.service-card {
+    text-align: center;
+    padding: 2.5rem 2rem;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(37, 99, 235, 0.1);
+}
+
+/* Gradient Background Variants */
+.service-card:nth-child(1) {
+    background: linear-gradient(135deg, #e0f2fe 0%, #ffffff 100%);
+}
+
+.service-card:nth-child(2) {
+    background: linear-gradient(135deg, #dbeafe 0%, #ffffff 100%);
+}
+
+.service-card:nth-child(3) {
+    background: linear-gradient(135deg, #bfdbfe 0%, #ffffff 100%);
+}
+
+.service-card:nth-child(4) {
+    background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+}
+
+.service-card:nth-child(5) {
+    background: linear-gradient(135deg, #dbeafe 0%, #f0f9ff 100%);
+}
+
+.service-card:nth-child(6) {
+    background: linear-gradient(135deg, #bfdbfe 0%, #f0f9ff 100%);
+}
+
+.service-card:nth-child(7) {
+    background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
+}
+
+/* Animated Border Effect */
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(37, 99, 235, 0.2), 
+        transparent
+    );
+    transition: left 0.5s ease;
+}
+
+.service-card:hover::before {
+    left: 100%;
+}
+
+/* Decorative Circle */
+.service-card::after {
+    content: '';
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    top: -50px;
+    right: -50px;
+    transition: all 0.4s ease;
+}
+
+.service-card:hover::after {
+    transform: scale(1.5);
+    opacity: 0.5;
+}
+
+.service-card:hover {
+    transform: translateY(-15px) scale(1.03);
+    box-shadow: 0 15px 40px rgba(37, 99, 235, 0.25);
+    border-color: var(--primary-blue);
+}
+
+/* Icon dengan background gradient */
+.service-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+    transition: all 0.4s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.service-card:hover .service-icon {
+    transform: rotateY(360deg) scale(1.15);
+    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.4);
+}
+
+.service-card h5 {
+    color: var(--primary-blue);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.service-card:hover h5 {
+    color: var(--dark-blue);
+    transform: scale(1.05);
+}
+
+.service-card p {
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+    line-height: 1.7;
+}
+
+.service-card:hover p {
+    color: var(--dark-gray);
+}
+
+/* Animasi Loading saat pertama muncul */
+@keyframes serviceCardAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.service-card {
+    animation: serviceCardAppear 0.6s ease-out;
+}
+
+.service-card:nth-child(1) { animation-delay: 0.1s; }
+.service-card:nth-child(2) { animation-delay: 0.2s; }
+.service-card:nth-child(3) { animation-delay: 0.3s; }
+.service-card:nth-child(4) { animation-delay: 0.4s; }
+.service-card:nth-child(5) { animation-delay: 0.5s; }
+.service-card:nth-child(6) { animation-delay: 0.6s; }
+.service-card:nth-child(7) { animation-delay: 0.7s; }
+
+/* Pulse effect untuk icon */
+@keyframes iconPulse {
+    0%, 100% {
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+    }
+    50% {
+        box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5);
+    }
+}
+
+.service-card:hover .service-icon {
+    animation: iconPulse 1.5s ease-in-out infinite;
+}
+
+/* Chart Section */
+.chart-section {
+    padding: 4rem 0;
+    background: var(--white);
+}
+
+.chart-container {
+    background: var(--white);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+    position: relative;
+    height: 400px;
+}
+
+.chart-container canvas {
+    max-height: 100%;
+}
+
+/* Footer */
+.footer {
+    background: linear-gradient(135deg, #1e293b, #334155);
+    color: var(--white);
+    padding: 3rem 0 1rem;
+    margin-top: 4rem;
+}
+
+.footer h5 {
+    color: var(--white);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.footer a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer a:hover {
+    color: var(--white);
+    padding-left: 5px;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1.5rem;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+/* Table */
+.table {
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead th {
+    background: var(--primary-blue);
+    color: var(--white);
+    border: none;
+    font-weight: 600;
+    padding: 1rem;
+}
+
+.table tbody tr {
+    transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+    background: rgba(37, 99, 235, 0.05);
+}
+
+/* Badge */
+.badge {
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    border-radius: 20px;
+}
+
+/* Form */
+.form-control, .form-select {
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.1);
+}
+
+/* Dashboard Stats - Info Section dengan Background Colorful */
+.py-5 {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 25%, #dbeafe 50%, #bfdbfe 75%, #e0f2fe 100%);
+    padding: 4rem 0 !important;
+}
+
+.stat-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+    border-radius: 20px;
+    padding: 2.5rem 2rem;
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(37, 99, 235, 0.1);
+}
+
+/* Gradient variants untuk setiap card */
+.py-5 .card:nth-child(1) .card-body {
+    background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+}
+
+.py-5 .card:nth-child(2) .card-body {
+    background: linear-gradient(135deg, #fef3c7 0%, #ffffff 100%);
+}
+
+.py-5 .card:nth-child(3) .card-body {
+    background: linear-gradient(135deg, #dbeafe 0%, #ffffff 100%);
+}
+
+/* Card dengan efek lebih menarik */
+.py-5 .card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.12);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    position: relative;
+}
+
+.py-5 .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(37, 99, 235, 0.15), 
+        transparent
+    );
+    transition: left 0.5s ease;
+}
+
+.py-5 .card:hover::before {
+    left: 100%;
+}
+
+.py-5 .card::after {
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    top: -40px;
+    right: -40px;
+    transition: all 0.4s ease;
+}
+
+.py-5 .card:hover::after {
+    transform: scale(1.5);
+    opacity: 0.5;
+}
+
+.py-5 .card:hover {
+    transform: translateY(-15px) scale(1.03);
+    box-shadow: 0 15px 40px rgba(37, 99, 235, 0.25);
+}
+
+.py-5 .card-body {
+    position: relative;
+    z-index: 1;
+    border-radius: 20px;
+}
+
+/* Icon dengan efek gradient dan animasi */
+.py-5 .stat-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    padding: 1.2rem;
+    background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
+    border-radius: 25px;
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+    transition: all 0.4s ease;
+}
+
+.py-5 .card:hover .stat-icon {
+    transform: rotateY(360deg) scale(1.2);
+    box-shadow: 0 15px 35px rgba(37, 99, 235, 0.4);
+}
+
+.py-5 .card h5 {
+    color: var(--primary-blue);
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.py-5 .card:hover h5 {
+    color: var(--dark-blue);
+    transform: scale(1.05);
+}
+
+.py-5 .card p {
+    color: var(--gray);
+    line-height: 1.7;
+    transition: all 0.3s ease;
+}
+
+.py-5 .card:hover p {
+    color: var(--dark-gray);
+}
+
+/* Animasi muncul saat load */
+@keyframes infoCardAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.py-5 .card {
+    animation: infoCardAppear 0.6s ease-out;
+}
+
+.py-5 .card:nth-child(1) { animation-delay: 0.1s; }
+.py-5 .card:nth-child(2) { animation-delay: 0.2s; }
+.py-5 .card:nth-child(3) { animation-delay: 0.3s; }
+
+/* Pulse effect untuk icon saat hover */
+@keyframes iconPulseInfo {
+    0%, 100% {
+        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+    }
+    50% {
+        box-shadow: 0 10px 30px rgba(37, 99, 235, 0.5);
+    }
+}
+
+.py-5 .card:hover .stat-icon {
+    animation: iconPulseInfo 1.5s ease-in-out infinite;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.stat-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--primary-blue);
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: var(--gray);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* ============================================ */
+/* CSS KHUSUS UNTUK HALAMAN LAYANAN */
+/* ============================================ */
+
+/* Image Header Section */
+.image-header-section { 
+    padding: 3rem 0; 
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); 
+}
+
+.image-wrapper { 
+    position: relative; 
+    max-width: 1000px; 
+    margin: 0 auto; 
+    border-radius: 25px; 
+    overflow: hidden; 
+    box-shadow: 0 20px 60px rgba(37, 99, 235, 0.3); 
+    animation: imageAppear 1s ease-out; 
+}
+
+@keyframes imageAppear { 
+    0% { opacity: 0; transform: scale(0.9) translateY(30px); } 
+    100% { opacity: 1; transform: scale(1) translateY(0); } 
+}
+
+.layanan-header-image { 
+    width: 100%; 
+    height: auto; 
+    display: block; 
+    transition: transform 0.5s ease; 
+}
+
+.image-wrapper:hover .layanan-header-image { 
+    transform: scale(1.05); 
+}
+
+.image-overlay { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    background: linear-gradient(180deg, transparent 0%, rgba(37, 99, 235, 0.1) 100%); 
+    pointer-events: none; 
+}
+
+/* Intro Section */
+.intro-section { 
+    padding: 4rem 0; 
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); 
+}
+
+.intro-card { 
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); 
+    padding: 3rem; 
+    border-radius: 20px; 
+    box-shadow: 0 10px 40px rgba(37, 99, 235, 0.15); 
+    text-align: center; 
+    position: relative; 
+    overflow: hidden; 
+    animation: introSlideIn 0.8s ease-out; 
+}
+
+@keyframes introSlideIn { 
+    0% { opacity: 0; transform: translateY(50px); } 
+    100% { opacity: 1; transform: translateY(0); } 
+}
+
+.intro-icon { 
+    font-size: 3rem; 
+    margin-bottom: 1.5rem; 
+    animation: bounceIcon 2s ease-in-out infinite; 
+}
+
+@keyframes bounceIcon { 
+    0%, 100% { transform: translateY(0); } 
+    50% { transform: translateY(-10px); } 
+}
+
+.intro-text { 
+    font-size: 1.2rem; 
+    line-height: 1.9; 
+    color: #1e40af; 
+    font-weight: 500; 
+    margin: 0; 
+    position: relative; 
+    z-index: 1; 
+}
+
+/* Section Title Wrapper */
+.section-title-wrapper { 
+    text-align: center; 
+    margin-bottom: 3rem; 
+}
+
+.section-title { 
+    font-size: 2.5rem; 
+    font-weight: 700; 
+    color: #1e293b; 
+    margin-bottom: 1rem; 
+}
+
+.title-underline { 
+    width: 100px; 
+    height: 5px; 
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); 
+    margin: 0 auto; 
+    border-radius: 10px; 
+}
+
+/* Visi Section */
+.visi-section { 
+    padding: 5rem 0; 
+    background: linear-gradient(135deg, #e0f2fe 0%, #bfdbfe 50%, #e0f2fe 100%); 
+}
+
+.visi-card { 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+    padding: 4rem 3rem; 
+    border-radius: 30px; 
+    box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4); 
+    text-align: center; 
+    animation: visiAppear 1s ease-out; 
+    position: relative;
+}
+
+@keyframes visiAppear { 
+    0% { opacity: 0; transform: scale(0.8); } 
+    100% { opacity: 1; transform: scale(1); } 
+}
+
+.visi-icon { 
+    font-size: 4rem; 
+    margin-bottom: 2rem; 
+    animation: pulseIcon 2s ease-in-out infinite; 
+}
+
+@keyframes pulseIcon { 
+    0%, 100% { transform: scale(1); } 
+    50% { transform: scale(1.1); } 
+}
+
+.visi-text { 
+    color: white; 
+    font-size: 1.5rem; 
+    line-height: 2; 
+    font-weight: 600; 
+    margin: 0; 
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); 
+}
+
+.visi-decoration { 
+    position: absolute; 
+    bottom: 20px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    width: 100px; 
+    height: 4px; 
+    background: rgba(255, 255, 255, 0.5); 
+    border-radius: 10px; 
+}
+
+/* Misi Section */
+.misi-section { 
+    padding: 5rem 0; 
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); 
+}
+
+.misi-grid { 
+    display: grid; 
+    gap: 2rem; 
+}
+
+.misi-item { 
+    display: flex; 
+    gap: 2rem; 
+    background: white; 
+    padding: 2.5rem; 
+    border-radius: 20px; 
+    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.1); 
+    transition: all 0.4s ease; 
+    animation: misiSlideIn 0.8s ease-out; 
+}
+
+.misi-item:nth-child(1) { 
+    animation-delay: 0.1s; 
+    border-left: 5px solid #3b82f6; 
+}
+
+.misi-item:nth-child(2) { 
+    animation-delay: 0.2s; 
+    border-left: 5px solid #8b5cf6; 
+}
+
+.misi-item:nth-child(3) { 
+    animation-delay: 0.3s; 
+    border-left: 5px solid #06b6d4; 
+}
+
+.misi-item:nth-child(4) { 
+    animation-delay: 0.4s; 
+    border-left: 5px solid #10b981; 
+}
+
+@keyframes misiSlideIn { 
+    0% { opacity: 0; transform: translateX(-100px); } 
+    100% { opacity: 1; transform: translateX(0); } 
+}
+
+.misi-item:hover { 
+    transform: translateX(15px) scale(1.02); 
+    box-shadow: 0 15px 50px rgba(37, 99, 235, 0.2); 
+}
+
+.misi-number { 
+    flex-shrink: 0; 
+    width: 60px; 
+    height: 60px; 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+    color: white; 
+    font-size: 1.8rem; 
+    font-weight: 700; 
+    border-radius: 15px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3); 
+    transition: all 0.3s ease; 
+}
+
+.misi-item:hover .misi-number { 
+    transform: rotate(360deg) scale(1.1); 
+}
+
+.misi-content {
+    flex: 1;
+}
+
+.misi-content p { 
+    margin: 0; 
+    font-size: 1.1rem; 
+    line-height: 1.8; 
+    color: #334155; 
+}
+
+/* Moto Section */
+.moto-section { 
+    padding: 5rem 0; 
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.moto-card { 
+    background: rgba(255, 255, 255, 0.15); 
+    backdrop-filter: blur(10px); 
+    padding: 4rem 3rem; 
+    border-radius: 30px; 
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); 
+    border: 2px solid rgba(255, 255, 255, 0.3); 
+    animation: motoAppear 1s ease-out; 
+}
+
+@keyframes motoAppear { 
+    0% { opacity: 0; transform: scale(0.9) translateY(50px); } 
+    100% { opacity: 1; transform: scale(1) translateY(0); } 
+}
+
+.moto-main { 
+    text-align: center; 
+    margin-bottom: 2rem; 
+}
+
+.moto-icon { 
+    font-size: 4rem; 
+    margin-bottom: 1.5rem; 
+}
+
+.moto-title { 
+    font-size: 3rem; 
+    font-weight: 800; 
+    color: white; 
+    letter-spacing: 5px; 
+    margin-bottom: 1.5rem; 
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3); 
+}
+
+.moto-divider { 
+    width: 150px; 
+    height: 3px; 
+    background: white; 
+    margin: 0 auto 2rem; 
+    border-radius: 10px; 
+}
+
+.moto-subtitle { 
+    font-size: 1.4rem; 
+    color: white; 
+    line-height: 2; 
+    font-weight: 500; 
+}
+
+.moto-word { 
+    font-weight: 700; 
+}
+
+.moto-description { 
+    background: rgba(255, 255, 255, 0.2); 
+    padding: 2rem; 
+    border-radius: 15px; 
+    backdrop-filter: blur(5px); 
+}
+
+.moto-description p { 
+    color: white; 
+    font-size: 1.1rem; 
+    line-height: 1.9; 
+    margin: 0; 
+    text-align: center; 
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-section p {
+        font-size: 1rem;
+    }
+    
+    .stat-value {
+        font-size: 2rem;
+    }
+    
+    /* Kurangi ukuran icon di mobile */
+    .index-page .floating-icon-1,
+    .index-page .floating-icon-2,
+    .index-page .floating-icon-3,
+    .index-page .floating-icon-4 {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Responsive untuk halaman layanan */
+    .visi-text { 
+        font-size: 1.2rem; 
+    }
+    
+    .misi-item { 
+        flex-direction: column; 
+        gap: 1rem; 
+        padding: 2rem; 
+    }
+    
+    .moto-title { 
+        font-size: 2rem; 
+        letter-spacing: 3px; 
+    }
+}

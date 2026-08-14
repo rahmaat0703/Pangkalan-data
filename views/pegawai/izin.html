@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catat Izin Keluar - Balai Bahasa Lampung</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+                       <a class="navbar-brand" href="/pegawai/dashboard">
+                <img src="/img/logo.png" alt="Logo Balai Bahasa Lampung" class="brand-logo">
+                
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/pegawai/dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/pegawai/profil">Profil</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/pegawai/izin">Izin Keluar-Masuk</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/pegawai/status">Status Izin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/pegawai/ganti-password">Ganti Password</a></li>
+                </ul>
+                <div class="d-flex align-items-center ms-3" id="userInfo"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">📝 Form Izin Keluar Kantor</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <strong>Catatan:</strong> Form ini digunakan untuk mencatat ketika Anda KELUAR dari kantor. Anda dapat mengisi jam kembali nanti di halaman Status Izin.
+                        </div>
+
+                        <form id="izinForm">
+                            <div class="mb-3">
+                                <label class="form-label">Tanggal <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" name="tanggal" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Jam Keluar <span class="text-danger">*</span></label>
+                                <input type="time" class="form-control" name="jam_keluar" required>
+                                <small class="text-muted">Masukkan jam saat Anda keluar dari kantor</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Keterangan <span class="text-danger">*</span></label>
+                                <textarea class="form-control" name="keterangan" rows="4" placeholder="Contoh: Keperluan bank, urusan keluarga, dll." required></textarea>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    Simpan Izin Keluar
+                                </button>
+                                <a href="/pegawai/dashboard" class="btn btn-outline-secondary">Kembali</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        // Check authentication
+        window.addEventListener('DOMContentLoaded', async function() {
+            const user = await checkAuth();
+            if (!user) {
+                window.location.href = '/login';
+                return;
+            }
+            
+            loadUserInfo();
+
+            // Set tanggal hari ini sebagai default
+            const today = new Date().toISOString().split('T')[0];
+            document.querySelector('input[name="tanggal"]').value = today;
+
+            // Set jam sekarang sebagai default
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.querySelector('input[name="jam_keluar"]').value = `${hours}:${minutes}`;
+        });
+
+        document.getElementById('izinForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+
+            try {
+                const response = await fetch('/api/pegawai/izin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showAlert('Izin keluar berhasil dicatat! Jangan lupa input jam kembali nanti.', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/pegawai/status';
+                    }, 2000);
+                } else {
+                    showAlert(result.message || 'Gagal mencatat izin keluar', 'danger');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Terjadi kesalahan saat menyimpan data', 'danger');
+            }
+        });
+    </script>
+</body>
+</html>

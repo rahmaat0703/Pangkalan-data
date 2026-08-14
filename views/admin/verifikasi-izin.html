@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifikasi Izin - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+                   <a class="navbar-brand" href="/pegawai/dashboard">
+                <img src="/img/logo.png" alt="Logo Balai Bahasa Lampung" class="brand-logo">
+
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/admin/dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/data-pegawai">Data Pegawai</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/admin/verifikasi-izin">Verifikasi Izin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/pelanggaran">Catatan Khusus</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/konsultasi">Daftar Permohonan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/laporan">Laporan</a></li>
+                </ul>
+                <div class="d-flex align-items-center ms-3" id="userInfo"></div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid my-4">
+        <h2 class="mb-4">✅ Verifikasi Izin Keluar-Masuk</h2>
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <select class="form-select" id="filterStatus">
+                            <option value="">Semua Status</option>
+                            <option value="Menunggu">Menunggu</option>
+                            <option value="Disetujui">Disetujui</option>
+                            <option value="Ditolak">Ditolak</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="date" class="form-control" id="filterTanggal">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="searchPegawai" placeholder="🔍 Cari nama pegawai...">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Pegawai</th>
+                                <th>NIP</th>
+                                <th>Jabatan</th>
+                                <th>Tanggal</th>
+                                <th>Jam Keluar</th>
+                                <th>Jam Kembali</th>
+                                <th>Keterangan</th>
+                                <th>Status</th>
+                                <th>Verifikator</th>
+                            </tr>
+                        </thead>
+                        <tbody id="izinTable">
+                            <tr><td colspan="10" class="text-center"><div class="spinner-border text-primary"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Verifikasi -->
+    <div class="modal fade" id="verifikasiModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Verifikasi Izin</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="izinId">
+                    <div id="infoPegawai" class="alert alert-info mb-3"></div>
+                    <div class="mb-3">
+                        <label class="form-label">Status <span class="text-danger">*</span></label>
+                        <select class="form-select" id="status" required>
+                            <option value="Disetujui">✅ Disetujui</option>
+                            <option value="Ditolak">❌ Ditolak</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Catatan Admin</label>
+                        <textarea class="form-control" id="catatan_admin" rows="3" placeholder="Opsional: berikan catatan untuk pegawai"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="simpanVerifikasi()">💾 Simpan Verifikasi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        let modalInstance, allData = [];
+
+        window.addEventListener('DOMContentLoaded', async function() {
+            const user = await checkAuth();
+            if (!user || user.role !== 'admin') {
+                window.location.href = '/login';
+                return;
+            }
+            loadUserInfo();
+            loadIzin();
+            modalInstance = new bootstrap.Modal(document.getElementById('verifikasiModal'));
+        });
+
+        async function loadIzin() {
+            try {
+                const response = await fetch('/api/admin/izin');
+                const result = await response.json();
+                if (result.success) {
+                    allData = result.data;
+                    displayIzin(allData);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('izinTable').innerHTML = `
+                    <tr><td colspan="10" class="text-center text-danger">Gagal memuat data</td></tr>
+                `;
+            }
+        }
+
+        function displayIzin(data) {
+            const tbody = document.getElementById('izinTable');
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="10" class="text-center">Tidak ada data izin</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = data.map((item, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td><strong>${item.nama_pegawai}</strong></td>
+                    <td>${item.nip}</td>
+                    <td><small>${item.jabatan || '-'}</small></td>
+                    <td>${formatTanggal(item.tanggal)}</td>
+                    <td><span class="badge bg-info">${formatWaktu(item.jam_keluar)}</span></td>
+                    <td><span class="badge bg-success">${formatWaktu(item.jam_kembali)}</span></td>
+                    <td><small>${item.keterangan}</small></td>
+                    <td><span class="badge ${getStatusBadgeClass(item.status)}">${item.status}</span></td>
+                    <td>
+                        ${item.status === 'Menunggu' ? 
+                            `<button class="btn btn-sm btn-primary" onclick="showVerifikasi(${item.id}, '${item.nama_pegawai}', '${item.nip}', '${formatTanggal(item.tanggal)}', '${formatWaktu(item.jam_keluar)}', '${formatWaktu(item.jam_kembali)}')">
+                                Verifikasi
+                            </button>` :
+                            `<small class="text-muted">${item.catatan_admin || 'Terverifikasi'}</small>`
+                        }
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function showVerifikasi(id, nama, nip, tanggal, jamKeluar, jamKembali) {
+            document.getElementById('izinId').value = id;
+            document.getElementById('status').value = 'Disetujui';
+            document.getElementById('catatan_admin').value = '';
+            
+            document.getElementById('infoPegawai').innerHTML = `
+                <strong>Data Izin:</strong><br>
+                <strong>Pegawai:</strong> ${nama} (${nip})<br>
+                <strong>Tanggal:</strong> ${tanggal}<br>
+                <strong>Jam Keluar:</strong> ${jamKeluar} | <strong>Jam Kembali:</strong> ${jamKembali}
+            `;
+            
+            modalInstance.show();
+        }
+
+        async function simpanVerifikasi() {
+            const id = document.getElementById('izinId').value;
+            const status = document.getElementById('status').value;
+            const catatan_admin = document.getElementById('catatan_admin').value;
+
+            try {
+                const response = await fetch(`/api/admin/izin/${id}/verifikasi`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status, catatan_admin })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showAlert(result.message, 'success');
+                    modalInstance.hide();
+                    loadIzin();
+                } else {
+                    showAlert(result.message, 'danger');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Terjadi kesalahan', 'danger');
+            }
+        }
+
+        // Filter functionality
+        document.getElementById('filterStatus').addEventListener('change', filterData);
+        document.getElementById('filterTanggal').addEventListener('change', filterData);
+        document.getElementById('searchPegawai').addEventListener('input', filterData);
+
+        function filterData() {
+            const statusFilter = document.getElementById('filterStatus').value;
+            const tanggalFilter = document.getElementById('filterTanggal').value;
+            const searchTerm = document.getElementById('searchPegawai').value.toLowerCase();
+
+            const filtered = allData.filter(item => {
+                const matchStatus = !statusFilter || item.status === statusFilter;
+                const matchTanggal = !tanggalFilter || item.tanggal === tanggalFilter;
+                const matchSearch = !searchTerm || item.nama_pegawai.toLowerCase().includes(searchTerm);
+                
+                return matchStatus && matchTanggal && matchSearch;
+            });
+
+            displayIzin(filtered);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PadayaBBPL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body class="index-page">
+    
+   
+    <div class="floating-icons">
+       
+        <div class="floating-icon-1"></div>
+        <div class="floating-icon-1"></div>
+        <div class="floating-icon-2"></div>
+        <div class="floating-icon-2"></div>
+        <div class="floating-icon-3"></div>
+        <div class="floating-icon-3"></div>
+        <div class="floating-icon-4"></div>
+        <div class="floating-icon-4"></div>
+    </div>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/img/logo.png" alt="Logo Balai Bahasa Lampung" class="brand-logo">
+                <span class="brand-text"></span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="/">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Layanan">Layanan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/ajukan-konsultasi">Ajukan Permohonan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/daftar-konsultasi">Daftar Permohonan</a></li>
+
+                    <li class="nav-item"><a class="nav-link" href="/login">Masuk</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+       <section class="hero-section">
+        <div class="container content">
+            <div class="fade-in-up">
+                <!-- UBAH H1 INI - Pisahkan Per Kata dengan span class="word" -->
+                <h1>
+                    <span class="word">Selamat</span>
+                    <span class="word">Datang</span>
+                    <span class="word">di</span>
+                    <span class="word">Balai</span>
+                    <span class="word">Bahasa</span>
+                    <span class="word">Provinsi</span>
+                    <span class="word">Lampung</span>
+                </h1>
+                <p>Badan Pengembangan dan Pembinaan Bahasa</p>
+                <a href="/ajukan-konsultasi" class="btn btn-light btn-lg me-3">Ajukan Permohonan</a>
+                <a href="/daftar-konsultasi" class="btn btn-outline-light btn-lg">Lihat Status</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Layanan Section -->
+    <section class="services-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Layanan Kami</h2>
+                <p class="text-muted">Berbagai layanan kebahasaan dan kesastraan untuk masyarakat</p>
+            </div>
+            <div class="row" id="servicesContainer"></div>
+        </div>
+    </section>
+
+    <!-- Chart Section -->
+    <section class="chart-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Statistik Permohonan</h2>
+                <p class="text-muted">Data Permohonan yang telah diajukan</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="chart-container">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="chart-container">
+                        <canvas id="doughnutChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <div class="stat-icon">📚</div>
+                            <h5>Pengembangan Bahasa</h5>
+                            <p class="text-muted">Penelitian dan pengembangan bahasa Indonesia</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <div class="stat-icon">🎓</div>
+                            <h5>Pembinaan Bahasa</h5>
+                            <p class="text-muted">Pelatihan dan bimbingan kebahasaan</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <div class="stat-icon">🌐</div>
+                            <h5>Layanan Masyarakat</h5>
+                            <p class="text-muted">Konsultasi dan fasilitasi kebahasaan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>Balai Bahasa Provinsi Lampung</h5>
+                    <p id="footerDesc">Badan Pengembangan dan Pembinaan Bahasa Indonesia di Provinsi Lampung</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Kontak</h5>
+                    <div id="footerContact"></div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Alamat</h5>
+                    <p id="footerAddress"></p>
+                    <div id="footerMap"></div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Balai Bahasa Provinsi Lampung. All rights reserved. develop Bye ART</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/chart-config.js"></script>
+    <script>
+        // Load services dari logic/layanan.js
+        async function loadServices() {
+            const services = [
+                { icon: '📚', nama: 'Ahli Bahasa & Fasilitasi Kebahasaan', deskripsi: 'Konsultasi mengenai kaidah bahasa Indonesia, penyuntingan, dan fasilitasi kebahasaan', slug: 'ahli-bahasa' },
+                { icon: '📝', nama: 'UKBI', deskripsi: 'Uji Kemahiran Berbahasa Indonesia untuk mengukur kemampuan berbahasa Indonesia', slug: 'ukbi' },
+                { icon: '🌐', nama: 'Penerjemah', deskripsi: 'Layanan penerjemahan dokumen dari dan ke bahasa Indonesia', slug: 'penerjemah' },
+                { icon: '📊', nama: 'Permohonan Data dan Informasi', deskripsi: 'Permintaan data dan informasi kebahasaan dan kesastraan', slug: 'data-informasi' },
+                { icon: '👨‍🎓', nama: 'PKL / Magang', deskripsi: 'Pengajuan Praktik Kerja Lapangan atau Magang di Balai Bahasa', slug: 'pkl-magang' },
+                { icon: '🏢', nama: 'Peminjaman Aula Laut Handak', deskripsi: 'Permohonan peminjaman Aula Laut Handak untuk kegiatan kebahasaan', slug: 'peminjaman-aula' },
+                { icon: '📋', nama: 'Lainnya', deskripsi: 'Keperluan lain yang berkaitan dengan kebahasaan dan kesastraan', slug: 'lainnya' }
+            ];
+
+            const container = document.getElementById('servicesContainer');
+            services.forEach(service => {
+                const col = document.createElement('div');
+                col.className = 'col-md-6 col-lg-4 mb-4';
+                col.innerHTML = `
+                    <a href="/layanan/${service.slug}" class="text-decoration-none">
+                        <div class="service-card service-card-hover">
+                            <div class="service-icon">${service.icon}</div>
+                            <h5>${service.nama}</h5>
+                            <p class="text-muted">${service.deskripsi}</p>
+                            <span class="btn btn-sm btn-outline-primary mt-2">Selengkapnya →</span>
+                        </div>
+                    </a>
+                `;
+                container.appendChild(col);
+            });
+        }
+
+        // Load footer data dari logic/footer.js
+        async function loadFooter() {
+            try {
+                const response = await fetch('/api/pengunjung/footer');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const data = result.data;
+                    
+                    document.getElementById('footerContact').innerHTML = `
+                        <p>📞 ${data.kontak.telepon}<br>
+                        📧 ${data.kontak.email}<br>
+                        🌐 <a href="${data.kontak.website}" class="text-white">${data.kontak.website}</a></p>
+                    `;
+                    
+                    document.getElementById('footerAddress').innerHTML = data.alamatLengkap;
+                    
+                    document.getElementById('footerMap').innerHTML = `
+                        <iframe src="${data.maps.embedUrl}" width="100%" height="200" style="border:0; border-radius: 10px; margin-top: 15px;" allowfullscreen="" loading="lazy"></iframe>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading footer:', error);
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadServices();
+            loadFooter();
+        });
+    </script>
+</body>
+</html>

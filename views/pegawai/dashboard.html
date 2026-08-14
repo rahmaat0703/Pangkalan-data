@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Pegawai - Balai Bahasa Lampung</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+              <a class="navbar-brand" href="/pegawai/dashboard">
+                <img src="/img/logo.png" alt="Logo Balai Bahasa Lampung" class="brand-logo">
+               
+             </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="/pegawai/dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/pegawai/profil">Profil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/pegawai/izin">Izin Keluar-Masuk</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/pegawai/status">Status Izin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/pegawai/ganti-password">Ganti Password</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/" target="_blank">Lihat Laman</a></li>
+                </ul>
+                <div class="d-flex align-items-center ms-3" id="userInfo"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid my-4">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="mb-4">Dashboard Pegawai</h2>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-value" id="izinBulanIni">0</div>
+                    <div class="stat-label">Izin Bulan Ini</div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="stat-card">
+                    <div class="stat-icon">⏳</div>
+                    <div class="stat-value" id="izinMenunggu">0</div>
+                    <div class="stat-label">Izin Menunggu Verifikasi</div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="stat-card">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-value" id="pelanggaran">0</div>
+                    <div class="stat-label">Total Pelanggaran</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Aksi Cepat</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <a href="/pegawai/izin" class="btn btn-primary w-100 py-3">
+                                    <div class="fs-2 mb-2">📝</div>
+                                    <div>Catat Izin Keluar</div>
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <a href="/pegawai/status" class="btn btn-info w-100 py-3">
+                                    <div class="fs-2 mb-2">📋</div>
+                                    <div>Lihat Status Izin</div>
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <a href="/pegawai/profil" class="btn btn-success w-100 py-3">
+                                    <div class="fs-2 mb-2">👤</div>
+                                    <div>Profil Saya</div>
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <a href="/pegawai/ganti-password" class="btn btn-warning w-100 py-3">
+                                    <div class="fs-2 mb-2">🔒</div>
+                                    <div>Ganti Password</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Section -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">ℹ️ Informasi Sistem Izin</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="fw-bold">Sistem Izin Keluar-Masuk Kantor</h6>
+                        <p>Sistem ini digunakan untuk mencatat keluar dan masuknya pegawai dari kantor.</p>
+                        
+                        <h6 class="fw-bold mt-3">Cara Menggunakan:</h6>
+                        <ol>
+                            <li>Ketika akan keluar kantor, klik <strong>"Catat Izin Keluar"</strong> dan isi form dengan jam keluar dan keterangan</li>
+                            <li>Ketika kembali ke kantor, buka <strong>"Lihat Status Izin"</strong>, cari data izin keluar tadi, dan input jam kembali</li>
+                            <li>Admin akan memverifikasi izin Anda</li>
+                            <li>Anda dapat melihat status verifikasi di halaman <strong>"Status Izin"</strong></li>
+                        </ol>
+
+                        <div class="alert alert-info">
+                            <strong>Catatan:</strong> Pastikan selalu mencatat jam keluar dan jam kembali dengan benar untuk keperluan absensi dan administrasi.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        // Check authentication
+        window.addEventListener('DOMContentLoaded', async function() {
+            const user = await checkAuth();
+            if (!user) {
+                window.location.href = '/login';
+                return;
+            }
+            
+            loadUserInfo();
+            loadStats();
+        });
+
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/pegawai/dashboard-stats');
+                const result = await response.json();
+
+                if (result.success) {
+                    document.getElementById('izinBulanIni').textContent = result.data.izinBulanIni;
+                    document.getElementById('izinMenunggu').textContent = result.data.izinMenunggu;
+                    document.getElementById('pelanggaran').textContent = result.data.pelanggaran;
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+    </script>
+</body>
+</html>

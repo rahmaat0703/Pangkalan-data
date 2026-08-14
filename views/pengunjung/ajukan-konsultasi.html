@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajukan Konsultasi - Balai Bahasa Lampung</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/img/logo.png" alt="Logo Balai Bahasa Lampung" class="brand-logo">
+                <span class="brand-text"></span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/ajukan-konsultasi">Ajukan Permohonan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/daftar-konsultasi">Daftar Permohonan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/login">Masuk</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">📋 Form Permohonan </h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="konsultasiForm" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="nama" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Alamat Surel <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Nomor Telepon <span class="text-danger">*</span></label>
+                                <input type="tel" class="form-control" name="nomor" placeholder="08xxxxxxxxxx" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Kategori Instansi <span class="text-danger">*</span></label>
+                                <select class="form-select" name="kategori_instansi" required>
+                                    <option value="">-- Pilih Kategori --</option>
+                                    <option value="Universitas / Institut">Universitas / Institut</option>
+                                    <option value="Sekolah">Sekolah</option>
+                                    <option value="Umum">Umum</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Nama Instansi <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="nama_instansi" placeholder="Contoh: Universitas Lampung" required>
+                                <small class="text-muted">Isi sesuai kategori yang dipilih. Untuk kategori Umum, dapat diisi "Pribadi"</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Keperluan <span class="text-danger">*</span></label>
+                                <select class="form-select" name="keperluan" required>
+                                    <option value="">-- Pilih Keperluan --</option>
+                                    <option value="Ahli Bahasa & Fasilitasi Kebahasaan">Ahli Bahasa & Fasilitasi Kebahasaan</option>
+                                    <option value="UKBI">UKBI</option>
+                                    <option value="Penerjemah">Penerjemah</option>
+                                    <option value="Permohonan Data dan Informasi">Permohonan Data dan Informasi</option>
+                                    <option value="PKL / Magang">PKL / Magang</option>
+                                    <option value="Peminjaman Aula Handak">Peminjaman Aula Handak</option>
+                                    <option value="Lainnya">Lainnya</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Keterangan</label>
+                                <textarea class="form-control" name="keterangan" rows="4" placeholder="Jelaskan keperluan Anda secara detail (opsional)"></textarea>
+                                <small class="text-muted">Jelaskan detail keperluan, tujuan, atau informasi tambahan lainnya</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Surat Permohonan **(wajib)**</label>
+                                <input type="file" class="form-control" name="file_pendukung" accept=".pdf,.doc,.docx">
+                                <small class="text-muted">Upload file pendukung (PDF, DOC, DOCX). Maksimal 10MB. File opsional.</small>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    Kirim Permohonan
+                                </button>
+                                <a href="/" class="btn btn-outline-secondary">Kembali</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        document.getElementById('konsultasiForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+
+            // Validasi email
+            const email = formData.get('email');
+            if (!isValidEmail(email)) {
+                showAlert('Format email tidak valid', 'danger');
+                return;
+            }
+
+            // Validasi nomor
+            const nomor = formData.get('nomor');
+            if (!isValidPhone(nomor)) {
+                showAlert('Nomor telepon harus 10-13 digit', 'danger');
+                return;
+            }
+
+            // Validasi file
+            const file = formData.get('file_pendukung');
+            if (file && file.size > 10 * 1024 * 1024) {
+                showAlert('Ukuran file maksimal 10MB', 'danger');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/pengunjung/konsultasi', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showAlert('Permohonan konsultasi berhasil diajukan! Silakan cek status di halaman Daftar Konsultasi', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/daftar-konsultasi';
+                    }, 2000);
+                } else {
+                    showAlert(result.message || 'Gagal mengajukan konsultasi', 'danger');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Terjadi kesalahan saat mengirim data', 'danger');
+            }
+        });
+    </script>
+</body>
+</html>
